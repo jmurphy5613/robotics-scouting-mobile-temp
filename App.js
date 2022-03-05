@@ -64,7 +64,7 @@ export default function App() {
             supportedOrientations={['landscape']}
           >
             <View style={styles.pop}>
-              <Text>apparantly this is a </Text>
+              <Text>{jsonData}</Text>
               <Button title="close" onPress={e => setPopup(!popup)}/>
             </View>
           </Modal>
@@ -157,12 +157,12 @@ const styles = StyleSheet.create({
   },
   pop: {
     backgroundColor: '#fff',
-    height: '20%',
-    width: '20%',
-    marginTop: '20%',
+    height: '40%',
+    width: '40%',
+    marginTop: '15%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: '40%'
+    marginLeft: '30%'
   },
 });
