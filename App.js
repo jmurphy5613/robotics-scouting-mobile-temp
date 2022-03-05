@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Counter from './components/counter';
 import { TextInput } from 'react-native';
 import { Modal } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-web';
+import QRcode from 'react-native-qrcode-svg';
 
 async function changeOrientation() {
   await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
@@ -39,7 +39,7 @@ export default function App() {
 
   const QR = () => {
     let raw = {
-      'teamId': team,
+      'teamId': parseInt(team),
       'highGoalAuto': highGoalA,
       'lowGoalAuto': lowGoalA,
       'highGoalOperated': highGoalO,
@@ -64,8 +64,13 @@ export default function App() {
             supportedOrientations={['landscape']}
           >
             <View style={styles.pop}>
-              <Text>{jsonData}</Text>
+              <QRcode
+                value={jsonData}
+                ecl='L'
+                size={250}
+              />
               <Button title="close" onPress={e => setPopup(!popup)}/>
+              <Button title="save as png" onPress={e => setPopup(!popup)}/>
             </View>
           </Modal>
         </View>
@@ -157,12 +162,16 @@ const styles = StyleSheet.create({
   },
   pop: {
     backgroundColor: '#fff',
-    height: '40%',
-    width: '40%',
-    marginTop: '15%',
+    height: '90%',
+    marginTop: '2%',
+    width: '60%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: '30%'
+    borderBottomStartRadius: 10,
+    borderBottomEndRadius: 10,
+    borderTopStartRadius: 10,
+    borderTopEndRadius: 10,
+    marginLeft: '20%'
   },
 });
