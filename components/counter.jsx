@@ -37,11 +37,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     master: {
-        width: 'auto',
-        height: '25%',
-        marginLeft: '0%',
+        width: '100%',
+        height: '20%',
         flexDirection: 'column',
-        marginTop: '4%'
+        marginTop: '5%'
     },
     title: {
         color: '#fff',
@@ -59,16 +58,16 @@ export default function Counter(props){
             <Text style={styles.title}>{props.title}</Text>
             <View style={styles.contain}>
                 
-                <TouchableOpacity style={styles.add} onPress={e => {setCount(count+1)}}>
-                    <Button color="#000"  title="add" onPress={e => {setCount(count+1)}}/>
+                <TouchableOpacity style={styles.add} onPress={e => {setCount(count+1); props.set(count+1)}}>
+                    <Button color="#000"  title="add" onPress={e => {setCount(count+1); props.set(count+1)}}/>
                 </TouchableOpacity>
                 <View style={styles.countBox}>
                     <Text style={styles.c}>
                        {count}
                     </Text> 
                 </View>
-                <TouchableOpacity style={styles.subtract} onPress={e => {if(count > 0){setCount(count-1)}}}>
-                    <Button color="#000" title="sub" onPress={e => {if(count > 0){setCount(count-1)}}}/>
+                <TouchableOpacity style={styles.subtract} onPress={e => {if(count > 0){setCount(count-1); props.set(count-1)}}}>
+                    <Button color="#000" title="sub" onPress={e => {if(count > 0){setCount(count-1); props.set(count-1)}}}/>
                 </TouchableOpacity>
             </View>
         </View>
