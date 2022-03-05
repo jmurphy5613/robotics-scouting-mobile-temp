@@ -10,15 +10,19 @@ async function changeOrientation() {
   await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
 }
 
-const TextUpdateHandler = (props) => {
-  return (
-    <TextInput
-      {...props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
-      editable
-    />
-  );
-}
+let jsonData;
 
+const QR = () => {
+  let raw = {
+    'teamId': team,
+    'hga': highGoalA,
+    'lga': lowGoalA,
+    'hgo': highGoalO,
+    'lgo': lowGoalO,
+    'notes': notes
+  } //not sure how well notes is gonna work, might but out and die if you put ", ', or like {}.
+  jsonData = JSON.stringify(raw);
+}
 
 export default function App() {
 
@@ -28,6 +32,7 @@ export default function App() {
   const [lowGoalA, setLowGoalA] = useState(0);
   const [lowGoalO, setLowGoalO] = useState(0);
   const [notes, setNotes] = useState(null);
+  const [team, setTeam] = useState(null);
 
   if(!isLoaded) {
     return (
@@ -56,13 +61,21 @@ export default function App() {
           </View>
           <View style={styles.ContainNotes}>
             <TextInput
+              keyboardType='numeric'
+              style={styles.team}
+              onChangeText={setTeam}
+              value={team}
+              placeholder="Team Number..."
+            />
+            <TextInput
               multiline
               style={styles.notes}
               onChangeText={setNotes}
               value={notes}
-              placeholder="put your notes here..."
+              placeholder="Extra Notes..."
             />
-            <Button title="gen QR code"/>
+            {/*put this thing as the modal trigger or something. right now, it just generates the json data. nothing else.*/}
+            <Button title="gen QR code" onPress={e => QR}/>
           </View>
         </View>
       </ScrollView>
@@ -96,10 +109,10 @@ const styles = StyleSheet.create({
   },
   notes: {
     color: '#fff',
-    marginTop: '10%',
+    marginTop: '2%',
     padding: 10,
     width: '90%',
-    height: '60%',
+    height: '50%',
     borderWidth: 2,
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,
@@ -107,6 +120,21 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 10,
     borderColor: '#333',
     backgroundColor: '#222',
-    marginBottom: '11%'
+    marginBottom: '10%'
+  },
+  team: {
+    color: '#fff',
+    marginTop: '10%',
+    padding: 10,
+    width: '90%',
+    height: '16%',
+    borderWidth: 2,
+    borderBottomStartRadius: 10,
+    borderBottomEndRadius: 10,
+    borderTopStartRadius: 10,
+    borderTopEndRadius: 10,
+    borderColor: '#222',
+    backgroundColor: '#111',
+    marginBottom: '0%'
   },
 });
