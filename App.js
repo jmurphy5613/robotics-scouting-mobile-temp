@@ -5,24 +5,14 @@ import AppLoading from 'expo-app-loading';
 import { useState } from 'react';
 import Counter from './components/counter';
 import { TextInput } from 'react-native';
+import { Modal } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-web';
 
 async function changeOrientation() {
   await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
 }
 
 let jsonData;
-
-const QR = () => {
-  let raw = {
-    'teamId': team,
-    'hga': highGoalA,
-    'lga': lowGoalA,
-    'hgo': highGoalO,
-    'lgo': lowGoalO,
-    'notes': notes
-  } //not sure how well notes is gonna work, might but out and die if you put ", ', or like {}.
-  jsonData = JSON.stringify(raw);
-}
 
 export default function App() {
 
@@ -33,6 +23,7 @@ export default function App() {
   const [lowGoalO, setLowGoalO] = useState(0);
   const [notes, setNotes] = useState(null);
   const [team, setTeam] = useState(null);
+  const [popup, setPopup] = useState(false);
 
   if(!isLoaded) {
     return (
@@ -46,12 +37,38 @@ export default function App() {
     )
   }
 
+  const QR = () => {
+    let raw = {
+      'teamId': team,
+      'highGoalAuto': highGoalA,
+      'lowGoalAuto': lowGoalA,
+      'highGoalOperated': highGoalO,
+      'lowGoalOperated': lowGoalO,
+      'notes': notes
+    } //not sure how well notes is gonna work, might but out and die if you put ", ', or like {}.
+    jsonData = JSON.stringify(raw);
+    setPopup(!popup);
+  }
+
   return (
     <View style={styles.mainContent}>
       
       <Text style={styles.title}>Jordan -- hga:{highGoalA}, lga:{lowGoalA}, hgo:{highGoalO}, lgo:{lowGoalO}</Text>
       <StatusBar style="auto" />
       <ScrollView keyboardShouldPersistTaps='handled'>
+        <View>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={popup}
+            supportedOrientations={['landscape']}
+          >
+            <View style={styles.pop}>
+              <Text>apparantly this is a </Text>
+              <Button title="close" onPress={e => setPopup(!popup)}/>
+            </View>
+          </Modal>
+        </View>
         <View style={styles.scrollContent}>
           <View style={styles.containCounter}>
             <Counter title="High Goal Auto" set={setHighGoalA}/>
@@ -74,14 +91,15 @@ export default function App() {
               value={notes}
               placeholder="Extra Notes..."
             />
-            {/*put this thing as the modal trigger or something. right now, it just generates the json data. nothing else.*/}
-            <Button title="gen QR code" onPress={e => QR}/>
+            <Button title="gen QR code" onPress={e => QR(team, highGoalA, lowGoalA, highGoalO, lowGoalO, notes)}/>
           </View>
         </View>
       </ScrollView>
     </View>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   mainContent: {
@@ -136,5 +154,15 @@ const styles = StyleSheet.create({
     borderColor: '#222',
     backgroundColor: '#111',
     marginBottom: '0%'
+  },
+  pop: {
+    backgroundColor: '#fff',
+    height: '20%',
+    width: '20%',
+    marginTop: '20%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: '40%'
   },
 });
