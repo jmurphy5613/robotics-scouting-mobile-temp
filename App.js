@@ -29,10 +29,16 @@ export default function App() {
 
   return (
     <View style={styles.mainContent}>
+      
       <Text style={styles.title}>Jordan</Text>
       <StatusBar style="auto" />
       <ScrollView>
-        <Counter title="High Goal Auto"/>
+        <View style={styles.containCounter}>
+          <Counter title="High Goal Auto"/>
+          <Counter title="Low Goal Auto"/>
+          <Counter title="High Goal Op"/>
+          <Counter title="Low Goal Op"/>
+        </View>
       </ScrollView>
     </View>
   );
@@ -49,5 +55,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white'
+  },
+  containCounter: {
+    width: '50%'
   }
 });

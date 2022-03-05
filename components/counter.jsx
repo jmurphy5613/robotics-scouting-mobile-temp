@@ -38,10 +38,10 @@ const styles = StyleSheet.create({
     },
     master: {
         width: 'auto',
-        height: '100%',
+        height: '25%',
         marginLeft: '0%',
         flexDirection: 'column',
-        marginBottom: '2%'
+        marginTop: '4%'
     },
     title: {
         color: '#fff',
@@ -60,7 +60,7 @@ export default function Counter(props){
             <View style={styles.contain}>
                 
                 <TouchableOpacity style={styles.add} onPress={e => {setCount(count+1)}}>
-                    <Button color="#000"  title="add" />
+                    <Button color="#000"  title="add" onPress={e => {setCount(count+1)}}/>
                 </TouchableOpacity>
                 <View style={styles.countBox}>
                     <Text style={styles.c}>
@@ -68,7 +68,7 @@ export default function Counter(props){
                     </Text> 
                 </View>
                 <TouchableOpacity style={styles.subtract} onPress={e => {if(count > 0){setCount(count-1)}}}>
-                    <Button color="#000" title="sub" />
+                    <Button color="#000" title="sub" onPress={e => {if(count > 0){setCount(count-1)}}}/>
                 </TouchableOpacity>
             </View>
         </View>
