@@ -70,7 +70,6 @@ export default function App() {
                 size={250}
               />
               <Button title="close" onPress={e => setPopup(!popup)}/>
-              <Button title="save as png" onPress={e => setPopup(!popup)}/>
             </View>
           </Modal>
         </View>
