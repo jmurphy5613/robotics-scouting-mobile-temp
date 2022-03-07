@@ -28,13 +28,15 @@ export default function App() {
 
 
   return (
-    <View style={styles.mainContent}>
+    <ScrollView contentContainerStyle={styles.mainContent}>
       <Text style={styles.title}>Jordan</Text>
       <StatusBar style="auto" />
-      <ScrollView>
-        <Counter title="High Goal Auto"/>
-      </ScrollView>
-    </View>
+      <Counter title="High Goal Auto"/>
+      <Counter title="Low Goal Auto"/>
+      <Counter title="High Goal Teleop"/>
+      <Counter title="Low Goal Teleop"/>
+    </ScrollView>
+
   );
 }
 
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    height: '100%'
+    height: '200%'
   },
   title: {
     color: 'white'
