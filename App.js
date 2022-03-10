@@ -23,6 +23,7 @@ export default function App() {
   const [lowGoalO, setLowGoalO] = useState(0);
   const [notes, setNotes] = useState(null);
   const [team, setTeam] = useState(null);
+  const [match, setMatch] = useState(null);
   const [popup, setPopup] = useState(false);
 
   if(!isLoaded) {
@@ -44,6 +45,7 @@ export default function App() {
       'lowGoalAuto': lowGoalA,
       'highGoalOperated': highGoalO,
       'lowGoalOperated': lowGoalO,
+      'matchNumber': parseInt(match),
       'notes': notes
     } //not sure how well notes is gonna work, might but out and die if you put ", ', or like {}.
     jsonData = JSON.stringify(raw);
@@ -81,13 +83,22 @@ export default function App() {
             <Counter title="Low Goal Op" set={setLowGoalO}/>
           </View>
           <View style={styles.ContainNotes}>
-            <TextInput
-              keyboardType='numeric'
-              style={styles.team}
-              onChangeText={setTeam}
-              value={team}
-              placeholder="Team Number..."
-            />
+            <View style={styles.ContainNotesAndMore}>
+              <TextInput
+                keyboardType='numeric'
+                style={styles.team}
+                onChangeText={setTeam}
+                value={team}
+                placeholder="Team Number..."
+              />
+              <TextInput
+                keyboardType='numeric'
+                style={styles.match}
+                onChangeText={setMatch}
+                value={match}
+                placeholder="Match Number..."
+              />
+            </View>
             <TextInput
               multiline
               style={styles.notes}
@@ -129,6 +140,11 @@ const styles = StyleSheet.create({
     width: '45%',
     height: '100%',
   },
+  ContainNotesAndMore: {
+    width: '100%',
+    height: '30%',
+    flexDirection: 'row'
+  },
   notes: {
     color: '#fff',
     marginTop: '2%',
@@ -148,8 +164,24 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginTop: '10%',
     padding: 10,
-    width: '90%',
-    height: '16%',
+    width: '40%',
+    height: '55%',
+    borderWidth: 2,
+    borderBottomStartRadius: 10,
+    borderBottomEndRadius: 10,
+    borderTopStartRadius: 10,
+    borderTopEndRadius: 10,
+    borderColor: '#222',
+    backgroundColor: '#111',
+    marginBottom: '0%'
+  },
+  match: {
+    color: '#fff',
+    marginTop: '10%',
+    marginLeft: '10%',
+    padding: 10,
+    width: '40%',
+    height: '55%',
     borderWidth: 2,
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,
