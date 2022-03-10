@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, StyleSheet, Text, View, Button } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Button, Picker } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation'; 
 import AppLoading from 'expo-app-loading';
 import { useState } from 'react';
@@ -7,6 +7,7 @@ import Counter from './components/counter';
 import { TextInput } from 'react-native';
 import { Modal } from 'react-native';
 import QRcode from 'react-native-qrcode-svg';
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 async function changeOrientation() {
   await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
@@ -25,6 +26,8 @@ export default function App() {
   const [team, setTeam] = useState(null);
   const [match, setMatch] = useState(null);
   const [popup, setPopup] = useState(false);
+  const [selectedValue, setSelectedValue] = useState("none");
+  const [taxi, setTaxi] = useState(false);
 
   if(!isLoaded) {
     return (
@@ -55,7 +58,7 @@ export default function App() {
   return (
     <View style={styles.mainContent}>
       
-      <Text style={styles.title}>Jordan -- hga:{highGoalA}, lga:{lowGoalA}, hgo:{highGoalO}, lgo:{lowGoalO}</Text>
+      <Text style={styles.title}>Jordan</Text>
       <StatusBar style="auto" />
       <ScrollView keyboardShouldPersistTaps='handled'>
         <View>
@@ -109,6 +112,45 @@ export default function App() {
             <Button title="gen QR code" onPress={e => QR(team, highGoalA, lowGoalA, highGoalO, lowGoalO, notes)}/>
           </View>
         </View>
+        <View style={styles.lowerContentContainer}>
+        <Text style={styles.title}>v More v</Text>
+        <Picker
+              selectedValue={selectedValue}
+              style={styles.dropdown}
+              onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+            >
+              <Picker.Item
+                label="none"
+                value="none"
+              />
+              <Picker.Item
+                label="low"
+                value="low"
+              />
+              <Picker.Item
+                label="mid"
+                value="mid"
+              />
+              <Picker.Item
+                label="high"
+                value="high"
+              />
+              <Picker.Item
+                label="traversal"
+                value="traversal"
+              />
+            </Picker>
+            <View>
+              <BouncyCheckbox
+                size={25}
+                fillColor="red"
+                unfillColor="#FFFFFF"
+                text="Custom Checkbox"
+                iconStyle={{ borderColor: "red" }}
+                onPress={(isChecked) => { setTaxi(!taxi) }}
+              />
+            </View>
+            </View>
       </ScrollView>
     </View>
   );
@@ -127,9 +169,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row'
   },
+  lowerContentContainer: {
+    marginTop: '5%'
+  },
   title: {
     color: 'white',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: 'bold'
   },
   containCounter: {
     width: '45%',
@@ -139,6 +185,17 @@ const styles = StyleSheet.create({
     marginLeft: '5%',
     width: '45%',
     height: '100%',
+  },
+  dropdown: {
+    marginTop: '2%',
+    height: '58%', 
+    width: '45%', 
+    padding: 0, 
+    backgroundColor: '#30283b',
+    borderBottomEndRadius: 10,
+    borderBottomStartRadius: 10,
+    borderTopEndRadius: 10,
+    borderTopStartRadius: 10,
   },
   ContainNotesAndMore: {
     width: '100%',
