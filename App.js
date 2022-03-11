@@ -113,43 +113,45 @@ export default function App() {
           </View>
         </View>
         <View style={styles.lowerContentContainer}>
-        <Text style={styles.title}>v More v</Text>
-        <Picker
-              selectedValue={selectedValue}
-              style={styles.dropdown}
-              onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-            >
-              <Picker.Item
-                label="none"
-                value="none"
-              />
-              <Picker.Item
-                label="low"
-                value="low"
-              />
-              <Picker.Item
-                label="mid"
-                value="mid"
-              />
-              <Picker.Item
-                label="high"
-                value="high"
-              />
-              <Picker.Item
-                label="traversal"
-                value="traversal"
-              />
-            </Picker>
-            <View>
-              <BouncyCheckbox
-                size={25}
-                fillColor="red"
-                unfillColor="#FFFFFF"
-                text="Custom Checkbox"
-                iconStyle={{ borderColor: "red" }}
-                onPress={(isChecked) => { setTaxi(!taxi) }}
-              />
-            </View>
+          <Text style={styles.title}>v More v</Text>
+          <View style={styles.LowerContentFlex}>
+          <Picker
+                selectedValue={selectedValue}
+                style={styles.dropdown}
+                onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+              >
+                <Picker.Item
+                  label="none"
+                  value="none"
+                />
+                <Picker.Item
+                  label="low"
+                  value="low"
+                />
+                <Picker.Item
+                  label="mid"
+                  value="mid"
+                />
+                <Picker.Item
+                  label="high"
+                  value="high"
+                />
+                <Picker.Item
+                  label="traversal"
+                  value="traversal"
+                />
+              </Picker>
+                <View style={styles.checkContainer}>
+                  <BouncyCheckbox
+                    size={25}
+                    fillColor="#666"
+                    unfillColor="#FFFFFF"
+                    text="Taxi"
+                    iconStyle={ styles.check }
+                    onPress={(isChecked) => { setTaxi(!taxi) }}
+                  />
+                </View>
+              </View>
             </View>
       </ScrollView>
     </View>
@@ -165,17 +167,33 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '200%'
   },
+  checkContainer:{
+    flexDirection: 'column',
+    marginTop: '2%',
+    marginLeft: '5%',
+  },
   scrollContent: {
     flex: 1,
     flexDirection: 'row'
   },
   lowerContentContainer: {
-    marginTop: '5%'
+    marginTop: '5%',
+  },
+  LowerContentFlex: {
+    height: '78%',
+    flexDirection: 'row'
   },
   title: {
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold'
+  },
+  check: {
+    borderColor: '#666',
+    borderBottomEndRadius: 10,
+    borderBottomStartRadius: 10,
+    borderTopEndRadius: 10,
+    borderTopStartRadius: 10,
   },
   containCounter: {
     width: '45%',
