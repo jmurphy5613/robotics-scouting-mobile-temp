@@ -28,8 +28,10 @@ export default function App() {
   const [popup, setPopup] = useState(false);
   const [rung, setRung] = useState("none");
   const [taxi, setTaxi] = useState(false);
+  const [stateController, setStateController] = useState(0);
 
   if(!isLoaded) {
+    
     return (
       <AppLoading 
         startAsync={async () => {
@@ -64,66 +66,15 @@ export default function App() {
       return 'false'
     }
   }
-
+  if(stateController == 0){
   return (
     <View style={styles.mainContent}>
       
       <Text style={styles.title}>Jordan -- r:{rung}, t:{logTaxi()}</Text>
       <StatusBar style="auto" />
       <ScrollView keyboardShouldPersistTaps='handled'>
-        <View>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={popup}
-            supportedOrientations={['landscape']}
-          >
-            <View style={styles.pop}>
-              <QRcode
-                value={jsonData}
-                ecl='L'
-                size={250}
-              />
-              <Button title="close" onPress={e => setPopup(!popup)}/>
-            </View>
-          </Modal>
-        </View>
-        <View style={styles.scrollContent}>
-          <View style={styles.containCounter}>
-            <Counter title="High Goal Auto" set={setHighGoalA}/>
-            <Counter title="Low Goal Auto" set={setLowGoalA}/>
-            <Counter title="High Goal Op" set={setHighGoalO}/>
-            <Counter title="Low Goal Op" set={setLowGoalO}/>
-          </View>
-          <View style={styles.ContainNotes}>
-            <View style={styles.ContainNotesAndMore}>
-              <TextInput
-                keyboardType='numeric'
-                style={styles.team}
-                onChangeText={setTeam}
-                value={team}
-                placeholder="Team Number..."
-              />
-              <TextInput
-                keyboardType='numeric'
-                style={styles.match}
-                onChangeText={setMatch}
-                value={match}
-                placeholder="Match Number..."
-              />
-            </View>
-            <TextInput
-              multiline
-              style={styles.notes}
-              onChangeText={setNotes}
-              value={notes}
-              placeholder="Extra Notes..."
-            />
-            <Button title="gen QR code" onPress={e => QR(team, highGoalA, lowGoalA, highGoalO, lowGoalO, notes)}/>
-          </View>
-        </View>
         <View style={styles.lowerContentContainer}>
-          <Text style={styles.title}>v More v</Text>
+          <Text style={styles.title}>Other</Text>
           <View style={styles.LowerContentFlex}>
           <Picker
                 selectedValue={rung}
@@ -166,6 +117,68 @@ export default function App() {
       </ScrollView>
     </View>
   );
+  }else if(stateController == 1){
+    return (
+      <View style={styles.mainContent}>
+        
+        <Text style={styles.title}>Jordan -- r:{rung}, t:{logTaxi()}</Text>
+        <StatusBar style="auto" />
+        <ScrollView keyboardShouldPersistTaps='handled'>
+          <View>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={popup}
+              supportedOrientations={['landscape']}
+            >
+              <View style={styles.pop}>
+                <QRcode
+                  value={jsonData}
+                  ecl='L'
+                  size={250}
+                />
+                <Button title="close" onPress={e => setPopup(!popup)}/>
+              </View>
+            </Modal>
+          </View>
+          <View style={styles.scrollContent}>
+            <View style={styles.containCounter}>
+              <Counter title="High Goal Auto" set={setHighGoalA}/>
+              <Counter title="Low Goal Auto" set={setLowGoalA}/>
+              <Counter title="High Goal Op" set={setHighGoalO}/>
+              <Counter title="Low Goal Op" set={setLowGoalO}/>
+            </View>
+            <View style={styles.ContainNotes}>
+              <View style={styles.ContainNotesAndMore}>
+                <TextInput
+                  keyboardType='numeric'
+                  style={styles.team}
+                  onChangeText={setTeam}
+                  value={team}
+                  placeholder="Team Number..."
+                />
+                <TextInput
+                  keyboardType='numeric'
+                  style={styles.match}
+                  onChangeText={setMatch}
+                  value={match}
+                  placeholder="Match Number..."
+                />
+              </View>
+              <TextInput
+                multiline
+                style={styles.notes}
+                onChangeText={setNotes}
+                value={notes}
+                placeholder="Extra Notes..."
+              />
+              <Button title="gen QR code" onPress={e => QR(team, highGoalA, lowGoalA, highGoalO, lowGoalO, notes)}/>
+            </View>
+          </View>
+        </ScrollView>
+      </View>
+    )      
+  }
 }
 
 
@@ -187,10 +200,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   lowerContentContainer: {
-    marginTop: '5%',
+    marginTop: '2%',
+    height: '100%'
   },
   LowerContentFlex: {
-    height: '78%',
+    height: '100%',
     flexDirection: 'row'
   },
   title: {
@@ -216,7 +230,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     marginTop: '2%',
-    height: '58%', 
+    height: '80%', 
     width: '45%', 
     padding: 0, 
     backgroundColor: '#30283b',
