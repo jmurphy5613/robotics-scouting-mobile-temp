@@ -26,7 +26,7 @@ export default function App() {
   const [team, setTeam] = useState(null);
   const [match, setMatch] = useState(null);
   const [popup, setPopup] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("none");
+  const [rung, setRung] = useState("none");
   const [taxi, setTaxi] = useState(false);
 
   if(!isLoaded) {
@@ -49,16 +49,26 @@ export default function App() {
       'highGoalOperated': highGoalO,
       'lowGoalOperated': lowGoalO,
       'matchNumber': parseInt(match),
+      'rung': rung,
+      'taxi': taxi,
       'notes': notes
     } //not sure how well notes is gonna work, might but out and die if you put ", ', or like {}.
     jsonData = JSON.stringify(raw);
     setPopup(!popup);
   }
 
+  const logTaxi = () => {
+    if(taxi){
+      return 'true'
+    }else{
+      return 'false'
+    }
+  }
+
   return (
     <View style={styles.mainContent}>
       
-      <Text style={styles.title}>Jordan</Text>
+      <Text style={styles.title}>Jordan -- r:{rung}, t:{logTaxi()}</Text>
       <StatusBar style="auto" />
       <ScrollView keyboardShouldPersistTaps='handled'>
         <View>
@@ -116,9 +126,9 @@ export default function App() {
           <Text style={styles.title}>v More v</Text>
           <View style={styles.LowerContentFlex}>
           <Picker
-                selectedValue={selectedValue}
+                selectedValue={rung}
                 style={styles.dropdown}
-                onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                onValueChange={(itemValue, itemIndex) => setRung(itemValue)}
               >
                 <Picker.Item
                   label="none"
@@ -148,7 +158,7 @@ export default function App() {
                     unfillColor="#FFFFFF"
                     text="Taxi"
                     iconStyle={ styles.check }
-                    onPress={(isChecked) => { setTaxi(!taxi) }}
+                    onPress={(isChecked) => { setTaxi(isChecked); }}
                   />
                 </View>
               </View>
