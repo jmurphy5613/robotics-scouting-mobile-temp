@@ -71,9 +71,9 @@ export default function App() {
       <View style={styles.mainContent}>
         <Text style={styles.title}>Jordan -- Setup</Text>
         <View style={styles.nav}>
-          <Button title="S" onPress={e => setStateController(0)}/>
-          <Button title="A" onPress={e => setStateController(1)}/>
-          <Button title="O" onPress={e => setStateController(2)}/>
+          <Button title="Setup" onPress={e => setStateController(0)}/>
+          <Button title="Auto" onPress={e => setStateController(1)}/>
+          <Button title="Teleop" onPress={e => setStateController(2)}/>
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -126,21 +126,29 @@ export default function App() {
   }else if(stateController == 1){
     return (
       <View style={styles.mainContent}>
-        <Text style={styles.title}>Jordan -- Auto</Text>
+        <Text style={styles.title}>Jordan -- Auto -- hga:{highGoalA}, lga:{lowGoalA}</Text>
         <View style={styles.nav}>
-          <Button title="S" onPress={e => setStateController(0)}/>
-          <Button title="A" onPress={e => setStateController(1)}/>
-          <Button title="O" onPress={e => setStateController(2)}/>
+          <Button title="Setup" onPress={e => setStateController(0)}/>
+          <Button title="Auto" onPress={e => setStateController(1)}/>
+          <Button title="Teleop" onPress={e => setStateController(2)}/>
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
           <View style={styles.scrollContent}>
             <View style={styles.containCounter}>
-              <Counter title="High Goal Auto" set={setHighGoalA}/>
-              <Counter title="Low Goal Auto" set={setLowGoalA}/>
+              <Counter title="High Goal Auto" get={highGoalA} set={setHighGoalA}/>
+              <Counter title="Low Goal Auto" get={lowGoalA} set={setLowGoalA}/>
             </View>
-            <View>
-
+            <View style={styles.checkContainer}>
+              <BouncyCheckbox
+                size={25}
+                fillColor="#666"
+                unfillColor="#FFFFFF"
+                text="Taxi"
+                isChecked={taxi}
+                iconStyle={ styles.check }
+                onPress={(isChecked) => { setTaxi(isChecked); }}
+              />
             </View>
           </View>
         </ScrollView>
@@ -149,46 +157,20 @@ export default function App() {
   }else if(stateController == 2){
     return (
       <View style={styles.mainContent}>
-        <Text style={styles.title}>Jordan -- Teleop</Text>
+        <Text style={styles.title}>Jordan -- Teleop -- hgo:{highGoalO}, lgo: {lowGoalO}</Text>
         <View style={styles.nav}>
-          <Button title="S" onPress={e => setStateController(0)}/>
-          <Button title="A" onPress={e => setStateController(1)}/>
-          <Button title="O" onPress={e => setStateController(2)}/>
+          <Button title="Setup" onPress={e => setStateController(0)}/>
+          <Button title="Auto" onPress={e => setStateController(1)}/>
+          <Button title="Teleop" onPress={e => setStateController(2)}/>
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
           <View style={styles.scrollContent}>
             <View style={styles.containCounter}>
-              <Counter title="High Goal Op" set={setHighGoalO}/>
-              <Counter title="Low Goal Op" set={setLowGoalO}/>
+              <Counter title="High Goal Op" get={highGoalO} set={setHighGoalO}/>
+              <Counter title="Low Goal Op" get={lowGoalO} set={setLowGoalO}/>
             </View>
             <View>
-              <Picker
-                selectedValue={rung}
-                style={styles.dropdown}
-                onValueChange={(itemValue, itemIndex) => setRung(itemValue)}
-              >
-                <Picker.Item
-                  label="none"
-                  value="none"
-                />
-                <Picker.Item
-                  label="low"
-                  value="low"
-                />
-                <Picker.Item
-                  label="mid"
-                  value="mid"
-                />
-                <Picker.Item
-                  label="high"
-                  value="high"
-                />
-                <Picker.Item
-                  label="traversal"
-                  value="traversal"
-                />
-              </Picker>
             </View>
           </View>
         </ScrollView>
