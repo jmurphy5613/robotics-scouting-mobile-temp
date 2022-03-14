@@ -195,7 +195,7 @@ export default function App() {
       </View>
     )
   }
-  else if(stateController == 10){
+  else if(stateController == 10){//this i just use for storage. 
     return (
     {/* 
       <Picker
