@@ -31,7 +31,6 @@ export default function App() {
   const [stateController, setStateController] = useState(0);
 
   if(!isLoaded) {
-    
     return (
       <AppLoading 
         startAsync={async () => {
@@ -66,88 +65,34 @@ export default function App() {
       return 'false'
     }
   }
+
   if(stateController == 0){
-  return (
-    <View style={styles.mainContent}>
-      
-      <Text style={styles.title}>Jordan -- r:{rung}, t:{logTaxi()}</Text>
-      <StatusBar style="auto" />
-      <ScrollView keyboardShouldPersistTaps='handled'>
-        <View style={styles.lowerContentContainer}>
-          <Text style={styles.title}>Other</Text>
-          <View style={styles.LowerContentFlex}>
-          <Picker
-                selectedValue={rung}
-                style={styles.dropdown}
-                onValueChange={(itemValue, itemIndex) => setRung(itemValue)}
-              >
-                <Picker.Item
-                  label="none"
-                  value="none"
-                />
-                <Picker.Item
-                  label="low"
-                  value="low"
-                />
-                <Picker.Item
-                  label="mid"
-                  value="mid"
-                />
-                <Picker.Item
-                  label="high"
-                  value="high"
-                />
-                <Picker.Item
-                  label="traversal"
-                  value="traversal"
-                />
-              </Picker>
-                <View style={styles.checkContainer}>
-                  <BouncyCheckbox
-                    size={25}
-                    fillColor="#666"
-                    unfillColor="#FFFFFF"
-                    text="Taxi"
-                    iconStyle={ styles.check }
-                    onPress={(isChecked) => { setTaxi(isChecked); }}
-                  />
-                </View>
-              </View>
-            </View>
-      </ScrollView>
-    </View>
-  );
-  }else if(stateController == 1){
     return (
       <View style={styles.mainContent}>
-        
-        <Text style={styles.title}>Jordan -- r:{rung}, t:{logTaxi()}</Text>
+        <Text style={styles.title}>Jordan -- Setup</Text>
+        <View style={styles.nav}>
+          <Button title="S" onPress={e => setStateController(0)}/>
+          <Button title="A" onPress={e => setStateController(1)}/>
+          <Button title="O" onPress={e => setStateController(2)}/>
+        </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
-          <View>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={popup}
-              supportedOrientations={['landscape']}
-            >
-              <View style={styles.pop}>
-                <QRcode
-                  value={jsonData}
-                  ecl='L'
-                  size={250}
-                />
-                <Button title="close" onPress={e => setPopup(!popup)}/>
-              </View>
-            </Modal>
-          </View>
-          <View style={styles.scrollContent}>
-            <View style={styles.containCounter}>
-              <Counter title="High Goal Auto" set={setHighGoalA}/>
-              <Counter title="Low Goal Auto" set={setLowGoalA}/>
-              <Counter title="High Goal Op" set={setHighGoalO}/>
-              <Counter title="Low Goal Op" set={setLowGoalO}/>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={popup}
+            supportedOrientations={['landscape']}
+          >
+            <View style={styles.pop}>
+              <QRcode
+                value={jsonData}
+                ecl='L'
+                size={250}
+              />
+              <Button title="close" onPress={e => setPopup(!popup)}/>
             </View>
+          </Modal>
+          <View style={styles.scrollContent}>
             <View style={styles.ContainNotes}>
               <View style={styles.ContainNotesAndMore}>
                 <TextInput
@@ -177,7 +122,110 @@ export default function App() {
           </View>
         </ScrollView>
       </View>
-    )      
+    );
+  }else if(stateController == 1){
+    return (
+      <View style={styles.mainContent}>
+        <Text style={styles.title}>Jordan -- Auto</Text>
+        <View style={styles.nav}>
+          <Button title="S" onPress={e => setStateController(0)}/>
+          <Button title="A" onPress={e => setStateController(1)}/>
+          <Button title="O" onPress={e => setStateController(2)}/>
+        </View>
+        <StatusBar style="auto" />
+        <ScrollView keyboardShouldPersistTaps='handled'>
+          <View style={styles.scrollContent}>
+            <View style={styles.containCounter}>
+              <Counter title="High Goal Auto" set={setHighGoalA}/>
+              <Counter title="Low Goal Auto" set={setLowGoalA}/>
+            </View>
+            <View>
+
+            </View>
+          </View>
+        </ScrollView>
+      </View>
+    )
+  }else if(stateController == 2){
+    return (
+      <View style={styles.mainContent}>
+        <Text style={styles.title}>Jordan -- Teleop</Text>
+        <View style={styles.nav}>
+          <Button title="S" onPress={e => setStateController(0)}/>
+          <Button title="A" onPress={e => setStateController(1)}/>
+          <Button title="O" onPress={e => setStateController(2)}/>
+        </View>
+        <StatusBar style="auto" />
+        <ScrollView keyboardShouldPersistTaps='handled'>
+          <View style={styles.scrollContent}>
+            <View style={styles.containCounter}>
+              <Counter title="High Goal Op" set={setHighGoalO}/>
+              <Counter title="Low Goal Op" set={setLowGoalO}/>
+            </View>
+            <View>
+              <Picker
+                selectedValue={rung}
+                style={styles.dropdown}
+                onValueChange={(itemValue, itemIndex) => setRung(itemValue)}
+              >
+                <Picker.Item
+                  label="none"
+                  value="none"
+                />
+                <Picker.Item
+                  label="low"
+                  value="low"
+                />
+                <Picker.Item
+                  label="mid"
+                  value="mid"
+                />
+                <Picker.Item
+                  label="high"
+                  value="high"
+                />
+                <Picker.Item
+                  label="traversal"
+                  value="traversal"
+                />
+              </Picker>
+            </View>
+          </View>
+        </ScrollView>
+      </View>
+    )
+  }
+  else if(stateController == 10){
+    return (
+    {/* 
+      <Picker
+        selectedValue={rung}
+        style={styles.dropdown}
+        onValueChange={(itemValue, itemIndex) => setRung(itemValue)}
+      >
+        <Picker.Item
+          label="none"
+          value="none"
+        />
+        <Picker.Item
+          label="low"
+          value="low"
+        />
+        <Picker.Item
+          label="mid"
+          value="mid"
+        />
+        <Picker.Item
+          label="high"
+          value="high"
+        />
+        <Picker.Item
+          label="traversal"
+          value="traversal"
+        />
+      </Picker>
+    */}
+    )
   }
 }
 
@@ -189,6 +237,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#0f172a',
     width: '100%',
     height: '200%'
+  },
+  nav: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   checkContainer:{
     flexDirection: 'column',
@@ -221,7 +273,7 @@ const styles = StyleSheet.create({
   },
   containCounter: {
     width: '45%',
-    height: '100%'
+    height: '75%'
   },
   ContainNotes: {
     marginLeft: '5%',
@@ -229,9 +281,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   dropdown: {
-    marginTop: '2%',
-    height: '80%', 
-    width: '45%', 
+    height: '50%', 
+    width: '100%', 
     padding: 0, 
     backgroundColor: '#30283b',
     borderBottomEndRadius: 10,
@@ -241,15 +292,15 @@ const styles = StyleSheet.create({
   },
   ContainNotesAndMore: {
     width: '100%',
-    height: '30%',
+    height: '50%',
     flexDirection: 'row'
   },
   notes: {
     color: '#fff',
-    marginTop: '2%',
+    marginTop: '5%',
     padding: 10,
     width: '90%',
-    height: '50%',
+    height: '60%',
     borderWidth: 2,
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,

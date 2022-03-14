@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     },
     master: {
         width: '100%',
-        height: '20%',
+        height: '50%',
         flexDirection: 'column',
         marginTop: '5%'
     },
