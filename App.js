@@ -44,15 +44,15 @@ export default function App() {
 
   const QR = () => {
     let raw = {
-      'teamId': parseInt(team),
-      'highGoalAuto': highGoalA,
-      'lowGoalAuto': lowGoalA,
-      'highGoalOperated': highGoalO,
-      'lowGoalOperated': lowGoalO,
-      'matchNumber': parseInt(match),
-      'rung': rung,
-      'taxi': taxi,
-      'notes': notes
+      'Team Number': parseInt(team),
+      'High Goal Auto': highGoalA,
+      'Low Goal Auto': lowGoalA,
+      'High Goal Operated': highGoalO,
+      'Low Goal Operated': lowGoalO,
+      'Match Number': parseInt(match),
+      'Rung Climed To': rung,
+      'Taxi': taxi,
+      'Notes': notes
     } //not sure how well notes is gonna work, might but out and die if you put ", ', or like {}.
     jsonData = JSON.stringify(raw);
     setPopup(!popup);
