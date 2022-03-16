@@ -1,14 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, StyleSheet, Text, View, Button, Picker } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Button, TouchableOpacity} from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation'; 
 import AppLoading from 'expo-app-loading';
 import { useState } from 'react';
 import Counter from './components/counter';
+import MPicker from './components/m_picker';
 import { TextInput } from 'react-native';
 import { Modal } from 'react-native';
 import QRcode from 'react-native-qrcode-svg';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-
 async function changeOrientation() {
   await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
 }
@@ -100,6 +100,7 @@ export default function App() {
                   style={styles.team}
                   onChangeText={setTeam}
                   value={team}
+                  placeholderTextColor={"#555"}
                   placeholder="Team Number..."
                 />
                 <TextInput
@@ -107,6 +108,7 @@ export default function App() {
                   style={styles.match}
                   onChangeText={setMatch}
                   value={match}
+                  placeholderTextColor={"#555"}
                   placeholder="Match Number..."
                 />
               </View>
@@ -114,6 +116,7 @@ export default function App() {
                 multiline
                 style={styles.notes}
                 onChangeText={setNotes}
+                placeholderTextColor={"#555"}
                 value={notes}
                 placeholder="Extra Notes..."
               />
@@ -171,6 +174,7 @@ export default function App() {
               <Counter title="Low Goal Op" get={lowGoalO} set={setLowGoalO}/>
             </View>
             <View>
+              <MPicker labels={["none", "low", "mid", "high", "traversal"]}/>
             </View>
           </View>
         </ScrollView>
@@ -282,7 +286,7 @@ const styles = StyleSheet.create({
     marginTop: '5%',
     padding: 10,
     width: '90%',
-    height: '60%',
+    height: '25%',
     borderWidth: 2,
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,
@@ -297,7 +301,7 @@ const styles = StyleSheet.create({
     marginTop: '10%',
     padding: 10,
     width: '40%',
-    height: '55%',
+    height: '50%',
     borderWidth: 2,
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,
@@ -313,7 +317,7 @@ const styles = StyleSheet.create({
     marginLeft: '10%',
     padding: 10,
     width: '40%',
-    height: '55%',
+    height: '50%',
     borderWidth: 2,
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,
