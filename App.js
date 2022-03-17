@@ -112,14 +112,6 @@ export default function App() {
                   placeholder="Match Number..."
                 />
               </View>
-              <TextInput
-                multiline
-                style={styles.notes}
-                onChangeText={setNotes}
-                placeholderTextColor={"#555"}
-                value={notes}
-                placeholder="Extra Notes..."
-              />
             </View>
           </View>
         </ScrollView>
@@ -278,7 +270,7 @@ const styles = StyleSheet.create({
   },
   ContainNotesAndMore: {
     width: '90%',
-    height: '50%',
+    height: '70%',
     flexDirection: 'row'
   },
   notes: {
