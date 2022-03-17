@@ -39,14 +39,42 @@ const styles = StyleSheet.create({
 
 export default function MPicker(props){
     const [toggleIndex, setToggleIndex] = useState(0);
+    const passUpward = (num) => {
+        setToggleIndex(num);
+        switch(num){
+            case 0:
+                props.set("none");
+                break;
+
+            case 1:
+                props.set("low");
+                break;
+            
+            case 2:
+                props.set("mid");
+                break;
+            
+            case 3:
+                props.set("high");
+                break;
+
+            case 4:
+                props.set("traversal");
+                break;
+            
+            default:
+                props.set(`error ${num}`);
+                break;
+        }
+    }
     return (
         <View style={styles.master}>
             <View>
-                <MPickerButton id={0} label={"none"} set={setToggleIndex} condition={toggleIndex} />
-                <MPickerButton id={1} label={"low"} set={setToggleIndex} condition={toggleIndex} />
-                <MPickerButton id={2} label={"mid"} set={setToggleIndex} condition={toggleIndex} />
-                <MPickerButton id={3} label={"high"} set={setToggleIndex} condition={toggleIndex} />
-                <MPickerButton id={4} label={"traversal"} set={setToggleIndex} condition={toggleIndex} />
+                <MPickerButton id={0} label={"none"} set={passUpward} condition={toggleIndex} />
+                <MPickerButton id={1} label={"low"} set={passUpward} condition={toggleIndex} />
+                <MPickerButton id={2} label={"mid"} set={passUpward} condition={toggleIndex} />
+                <MPickerButton id={3} label={"high"} set={passUpward} condition={toggleIndex} />
+                <MPickerButton id={4} label={"traversal"} set={passUpward} condition={toggleIndex} />
             </View>
         </View>
     );

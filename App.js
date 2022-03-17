@@ -44,15 +44,15 @@ export default function App() {
 
   const QR = () => {
     let raw = {
-      'Team Number': parseInt(team),
-      'High Goal Auto': highGoalA,
-      'Low Goal Auto': lowGoalA,
-      'High Goal Operated': highGoalO,
-      'Low Goal Operated': lowGoalO,
-      'Match Number': parseInt(match),
-      'Rung Climed To': rung,
-      'Taxi': taxi,
-      'Notes': notes
+      'teamId': parseInt(team),
+      'highGoalAuto': highGoalA,
+      'lowGoalAuto': lowGoalA,
+      'highGoalOperated': highGoalO,
+      'lowGoalOperated': lowGoalO,
+      'matchId': parseInt(match),
+      'rungClimedTo': rung,
+      'taxi': taxi,
+      'notes': notes
     } //not sure how well notes is gonna work, might but out and die if you put ", ', or like {}.
     jsonData = JSON.stringify(raw);
     setPopup(!popup);
@@ -165,7 +165,7 @@ export default function App() {
               <Counter title="Low Goal Op" get={lowGoalO} set={setLowGoalO}/>
             </View>
             <View>
-              <MPicker labels={["none", "low", "mid", "high", "traversal"]}/>
+              <MPicker set={setRung} labels={["none", "low", "mid", "high", "traversal"]}/>
             </View>
           </View>
         </ScrollView>
