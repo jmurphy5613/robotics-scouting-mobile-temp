@@ -1,13 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, StyleSheet, Text, View, Button } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Button, TouchableOpacity} from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation'; 
 import AppLoading from 'expo-app-loading';
 import { useState } from 'react';
 import Counter from './components/counter';
+import MPicker from './components/m_picker';
 import { TextInput } from 'react-native';
 import { Modal } from 'react-native';
 import QRcode from 'react-native-qrcode-svg';
-
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 async function changeOrientation() {
   await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
 }
@@ -23,7 +24,11 @@ export default function App() {
   const [lowGoalO, setLowGoalO] = useState(0);
   const [notes, setNotes] = useState(null);
   const [team, setTeam] = useState(null);
+  const [match, setMatch] = useState(null);
   const [popup, setPopup] = useState(false);
+  const [rung, setRung] = useState("none");
+  const [taxi, setTaxi] = useState(false);
+  const [stateController, setStateController] = useState(0);
 
   if(!isLoaded) {
     return (
@@ -39,24 +44,39 @@ export default function App() {
 
   const QR = () => {
     let raw = {
-      'teamId': parseInt(team),
-      'highGoalAuto': highGoalA,
-      'lowGoalAuto': lowGoalA,
-      'highGoalOperated': highGoalO,
-      'lowGoalOperated': lowGoalO,
-      'notes': notes
+      'Team Number': parseInt(team),
+      'High Goal Auto': highGoalA,
+      'Low Goal Auto': lowGoalA,
+      'High Goal Operated': highGoalO,
+      'Low Goal Operated': lowGoalO,
+      'Match Number': parseInt(match),
+      'Rung Climed To': rung,
+      'Taxi': taxi,
+      'Notes': notes
     } //not sure how well notes is gonna work, might but out and die if you put ", ', or like {}.
     jsonData = JSON.stringify(raw);
     setPopup(!popup);
   }
 
-  return (
-    <View style={styles.mainContent}>
-      
-      <Text style={styles.title}>Jordan -- hga:{highGoalA}, lga:{lowGoalA}, hgo:{highGoalO}, lgo:{lowGoalO}</Text>
-      <StatusBar style="auto" />
-      <ScrollView keyboardShouldPersistTaps='handled'>
-        <View>
+  const logTaxi = () => {
+    if(taxi){
+      return 'true'
+    }else{
+      return 'false'
+    }
+  }
+
+  if(stateController == 0){
+    return (
+      <View style={styles.mainContent}>
+        <Text style={styles.title}>Jordan -- Setup</Text>
+        <View style={styles.nav}>
+          <Button title="Setup" onPress={e => setStateController(0)}/>
+          <Button title="Auto" onPress={e => setStateController(1)}/>
+          <Button title="Teleop" onPress={e => setStateController(2)}/>
+        </View>
+        <StatusBar style="auto" />
+        <ScrollView keyboardShouldPersistTaps='handled'>
           <Modal
             animationType="slide"
             transparent={true}
@@ -70,38 +90,129 @@ export default function App() {
                 size={250}
               />
               <Button title="close" onPress={e => setPopup(!popup)}/>
-              <Button title="save as png" onPress={e => setPopup(!popup)}/>
             </View>
           </Modal>
-        </View>
-        <View style={styles.scrollContent}>
-          <View style={styles.containCounter}>
-            <Counter title="High Goal Auto" set={setHighGoalA}/>
-            <Counter title="Low Goal Auto" set={setLowGoalA}/>
-            <Counter title="High Goal Op" set={setHighGoalO}/>
-            <Counter title="Low Goal Op" set={setLowGoalO}/>
+          <View style={styles.scrollContent}>
+            <View style={styles.ContainNotes}>
+              <View style={styles.ContainNotesAndMore}>
+                <TextInput
+                  keyboardType='numeric'
+                  style={styles.team}
+                  onChangeText={setTeam}
+                  value={team}
+                  placeholderTextColor={"#555"}
+                  placeholder="Team Number..."
+                />
+                <TextInput
+                  keyboardType='numeric'
+                  style={styles.match}
+                  onChangeText={setMatch}
+                  value={match}
+                  placeholderTextColor={"#555"}
+                  placeholder="Match Number..."
+                />
+              </View>
+              <TextInput
+                multiline
+                style={styles.notes}
+                onChangeText={setNotes}
+                placeholderTextColor={"#555"}
+                value={notes}
+                placeholder="Extra Notes..."
+              />
+              <Button title="gen QR code" onPress={e => QR(team, highGoalA, lowGoalA, highGoalO, lowGoalO, notes)}/>
+            </View>
           </View>
-          <View style={styles.ContainNotes}>
-            <TextInput
-              keyboardType='numeric'
-              style={styles.team}
-              onChangeText={setTeam}
-              value={team}
-              placeholder="Team Number..."
-            />
-            <TextInput
-              multiline
-              style={styles.notes}
-              onChangeText={setNotes}
-              value={notes}
-              placeholder="Extra Notes..."
-            />
-            <Button title="gen QR code" onPress={e => QR(team, highGoalA, lowGoalA, highGoalO, lowGoalO, notes)}/>
-          </View>
+        </ScrollView>
+      </View>
+    );
+  }else if(stateController == 1){
+    return (
+      <View style={styles.mainContent}>
+        <Text style={styles.title}>Jordan -- Auto -- hga:{highGoalA}, lga:{lowGoalA}</Text>
+        <View style={styles.nav}>
+          <Button title="Setup" onPress={e => setStateController(0)}/>
+          <Button title="Auto" onPress={e => setStateController(1)}/>
+          <Button title="Teleop" onPress={e => setStateController(2)}/>
         </View>
-      </ScrollView>
-    </View>
-  );
+        <StatusBar style="auto" />
+        <ScrollView keyboardShouldPersistTaps='handled'>
+          <View style={styles.scrollContent}>
+            <View style={styles.containCounter}>
+              <Counter title="High Goal Auto" get={highGoalA} set={setHighGoalA}/>
+              <Counter title="Low Goal Auto" get={lowGoalA} set={setLowGoalA}/>
+            </View>
+            <View style={styles.checkContainer}>
+              <BouncyCheckbox
+                size={25}
+                fillColor="#666"
+                unfillColor="#FFFFFF"
+                text="Taxi"
+                isChecked={taxi}
+                iconStyle={ styles.check }
+                onPress={(isChecked) => { setTaxi(isChecked); }}
+              />
+            </View>
+          </View>
+        </ScrollView>
+      </View>
+    )
+  }else if(stateController == 2){
+    return (
+      <View style={styles.mainContent}>
+        <Text style={styles.title}>Jordan -- Teleop -- hgo:{highGoalO}, lgo: {lowGoalO}</Text>
+        <View style={styles.nav}>
+          <Button title="Setup" onPress={e => setStateController(0)}/>
+          <Button title="Auto" onPress={e => setStateController(1)}/>
+          <Button title="Teleop" onPress={e => setStateController(2)}/>
+        </View>
+        <StatusBar style="auto" />
+        <ScrollView keyboardShouldPersistTaps='handled'>
+          <View style={styles.scrollContent}>
+            <View style={styles.containCounter}>
+              <Counter title="High Goal Op" get={highGoalO} set={setHighGoalO}/>
+              <Counter title="Low Goal Op" get={lowGoalO} set={setLowGoalO}/>
+            </View>
+            <View>
+              <MPicker labels={["none", "low", "mid", "high", "traversal"]}/>
+            </View>
+          </View>
+        </ScrollView>
+      </View>
+    )
+  }
+  else if(stateController == 10){//this i just use for storage. 
+    return (
+    {/* 
+      <Picker
+        selectedValue={rung}
+        style={styles.dropdown}
+        onValueChange={(itemValue, itemIndex) => setRung(itemValue)}
+      >
+        <Picker.Item
+          label="none"
+          value="none"
+        />
+        <Picker.Item
+          label="low"
+          value="low"
+        />
+        <Picker.Item
+          label="mid"
+          value="mid"
+        />
+        <Picker.Item
+          label="high"
+          value="high"
+        />
+        <Picker.Item
+          label="traversal"
+          value="traversal"
+        />
+      </Picker>
+    */}
+    )
+  }
 }
 
 
@@ -113,29 +224,69 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '200%'
   },
+  nav: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  checkContainer:{
+    flexDirection: 'column',
+    marginTop: '2%',
+    marginLeft: '5%',
+  },
   scrollContent: {
     flex: 1,
     flexDirection: 'row'
   },
+  lowerContentContainer: {
+    marginTop: '2%',
+    height: '100%'
+  },
+  LowerContentFlex: {
+    height: '100%',
+    flexDirection: 'row'
+  },
   title: {
     color: 'white',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: 'bold'
+  },
+  check: {
+    borderColor: '#666',
+    borderBottomEndRadius: 10,
+    borderBottomStartRadius: 10,
+    borderTopEndRadius: 10,
+    borderTopStartRadius: 10,
   },
   containCounter: {
     width: '45%',
-    height: '100%'
+    height: '75%'
   },
   ContainNotes: {
     marginLeft: '5%',
     width: '45%',
     height: '100%',
   },
+  dropdown: {
+    height: '50%', 
+    width: '100%', 
+    padding: 0, 
+    backgroundColor: '#30283b',
+    borderBottomEndRadius: 10,
+    borderBottomStartRadius: 10,
+    borderTopEndRadius: 10,
+    borderTopStartRadius: 10,
+  },
+  ContainNotesAndMore: {
+    width: '100%',
+    height: '50%',
+    flexDirection: 'row'
+  },
   notes: {
     color: '#fff',
-    marginTop: '2%',
+    marginTop: '5%',
     padding: 10,
     width: '90%',
-    height: '50%',
+    height: '25%',
     borderWidth: 2,
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,
@@ -149,8 +300,24 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginTop: '10%',
     padding: 10,
-    width: '90%',
-    height: '16%',
+    width: '40%',
+    height: '50%',
+    borderWidth: 2,
+    borderBottomStartRadius: 10,
+    borderBottomEndRadius: 10,
+    borderTopStartRadius: 10,
+    borderTopEndRadius: 10,
+    borderColor: '#222',
+    backgroundColor: '#111',
+    marginBottom: '0%'
+  },
+  match: {
+    color: '#fff',
+    marginTop: '10%',
+    marginLeft: '10%',
+    padding: 10,
+    width: '40%',
+    height: '50%',
     borderWidth: 2,
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,

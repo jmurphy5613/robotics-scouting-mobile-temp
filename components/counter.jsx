@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     },
     master: {
         width: '100%',
-        height: '20%',
+        height: '75%',
         flexDirection: 'column',
         marginTop: '5%'
     },
@@ -51,23 +51,21 @@ const styles = StyleSheet.create({
 });
 
 export default function Counter(props){
-    const [count, setCount] = useState(0);
     return (
         <View style={styles.master}>
             {/* this is the button container. im sorry that there are like five view tags, the button doesn't support styles :cryscream:*/}
             <Text style={styles.title}>{props.title}</Text>
             <View style={styles.contain}>
-                
-                <TouchableOpacity style={styles.add} onPress={e => {setCount(count+1); props.set(count+1)}}>
-                    <Button color="#000"  title="add" onPress={e => {setCount(count+1); props.set(count+1)}}/>
+                <TouchableOpacity style={styles.add} onPress={e => {props.set(props.get+1);}}>
+                    <Button color="#000"  title="add" onPress={e => {props.set(props.get+1);}}/>
                 </TouchableOpacity>
                 <View style={styles.countBox}>
                     <Text style={styles.c}>
-                       {count}
+                       {props.get}
                     </Text> 
                 </View>
-                <TouchableOpacity style={styles.subtract} onPress={e => {if(count > 0){setCount(count-1); props.set(count-1)}}}>
-                    <Button color="#000" title="sub" onPress={e => {if(count > 0){setCount(count-1); props.set(count-1)}}}/>
+                <TouchableOpacity style={styles.subtract} onPress={e => {if(props.get > 0){props.set(props.get-1)}}}>
+                    <Button color="#000" title="sub" onPress={e => {if(props.get > 0){props.set(props.get-1)}}}/>
                 </TouchableOpacity>
             </View>
         </View>
