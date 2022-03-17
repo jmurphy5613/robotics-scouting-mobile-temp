@@ -30,11 +30,17 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function MPickerButton() {
-    if(props.enabled){
+export default function MPickerButton(props) {
+    if(props.condition === props.id){
         return (
-            <TouchableOpacity style={styles.on} onPress={e => {props.handle()}}>
+            <TouchableOpacity style={styles.on}>
                 <Text style={styles.textOn}>{props.label}</Text>
+            </TouchableOpacity>
+        );
+    }else{
+        return (
+            <TouchableOpacity style={styles.off} onPress={e => {props.set(props.id)}}>
+                <Text style={styles.textOff}>{props.label}</Text>
             </TouchableOpacity>
         );
     }

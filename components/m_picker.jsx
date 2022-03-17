@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity} from 'react-native';
+import MPickerButton from './m_p_button';
 
 const styles = StyleSheet.create({
     master: {
@@ -28,6 +29,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 20
     },
+    rounded: {
+        borderBottomEndRadius: 10,
+        borderBottomStartRadius: 10,
+        borderTopStartRadius: 10,
+        borderTopEndRadius: 10,
+    }
 });
 
 export default function MPicker(props){
@@ -35,21 +42,11 @@ export default function MPicker(props){
     return (
         <View style={styles.master}>
             <View>
-                <TouchableOpacity style={styles.off} onPress={e => {setToggleIndex(0)}}>
-                    <Text style={styles.textOff}>{props.labels[0]}{toggleIndex}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.off} onPress={e => {setToggleIndex(1)}}>
-                    <Text style={styles.textOff}>{props.labels[1]}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.off} onPress={e => {setToggleIndex(2)}}>
-                    <Text style={styles.textOff}>{props.labels[2]}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.off} onPress={e => {setToggleIndex(3)}}>
-                    <Text style={styles.textOff}>{props.labels[3]}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.off} onPress={e => {setToggleIndex(4)}}>
-                    <Text style={styles.textOff}>{props.labels[4]}</Text>
-                </TouchableOpacity>
+                <MPickerButton id={0} label={"none"} set={setToggleIndex} condition={toggleIndex} />
+                <MPickerButton id={1} label={"low"} set={setToggleIndex} condition={toggleIndex} />
+                <MPickerButton id={2} label={"mid"} set={setToggleIndex} condition={toggleIndex} />
+                <MPickerButton id={3} label={"high"} set={setToggleIndex} condition={toggleIndex} />
+                <MPickerButton id={4} label={"traversal"} set={setToggleIndex} condition={toggleIndex} />
             </View>
         </View>
     );

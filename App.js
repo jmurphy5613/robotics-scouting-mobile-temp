@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
   },
   ContainNotesAndMore: {
     width: '90%',
-    height: '70%',
+    height: '100%',
     flexDirection: 'row'
   },
   notes: {
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
   match: {
     color: '#fff',
     marginTop: '10%',
-    marginLeft: '10%',
+    marginLeft: '20%',
     padding: 10,
     width: '40%',
     height: '50%',
