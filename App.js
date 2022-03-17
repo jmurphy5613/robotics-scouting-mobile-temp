@@ -50,7 +50,7 @@ export default function App() {
       'highGoalOperated': highGoalO,
       'lowGoalOperated': lowGoalO,
       'matchId': parseInt(match),
-      'rungClimedTo': parseInt(rung),
+      'rungClimedTo': rung,
       'taxi': taxi,
       'notes': notes
     } //not sure how well notes is gonna work, might but out and die if you put ", ', or like {}.
@@ -74,6 +74,7 @@ export default function App() {
           <Button title="Setup" onPress={e => setStateController(0)}/>
           <Button title="Auto" onPress={e => setStateController(1)}/>
           <Button title="Teleop" onPress={e => setStateController(2)}/>
+          <Button title="Final" onPress={e => setStateController(3)}/>
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -125,6 +126,7 @@ export default function App() {
           <Button title="Setup" onPress={e => setStateController(0)}/>
           <Button title="Auto" onPress={e => setStateController(1)}/>
           <Button title="Teleop" onPress={e => setStateController(2)}/>
+          <Button title="Final" onPress={e => setStateController(3)}/>
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -156,6 +158,7 @@ export default function App() {
           <Button title="Setup" onPress={e => setStateController(0)}/>
           <Button title="Auto" onPress={e => setStateController(1)}/>
           <Button title="Teleop" onPress={e => setStateController(2)}/>
+          <Button title="Final" onPress={e => setStateController(3)}/>
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -169,7 +172,52 @@ export default function App() {
             </View>
           </View>
         </ScrollView>
-        <Button title="gen QR code" onPress={e => QR(team, highGoalA, lowGoalA, highGoalO, lowGoalO, notes)}/>
+      </View>
+    )
+  }
+  else if(stateController == 3){
+    return (
+      <View style={styles.mainContent}>
+        {/* <Text style={styles.title}>Jordan -- Setup</Text> */}
+        <View style={styles.nav}>
+          <Button title="Setup" onPress={e => setStateController(0)}/>
+          <Button title="Auto" onPress={e => setStateController(1)}/>
+          <Button title="Teleop" onPress={e => setStateController(2)}/>
+          <Button title="Final" onPress={e => setStateController(3)}/>
+        </View>
+        <StatusBar style="auto" />
+        <ScrollView keyboardShouldPersistTaps='handled'>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={popup}
+            supportedOrientations={['landscape']}
+          >
+            <View style={styles.pop}>
+              <QRcode
+                value={jsonData}
+                ecl='L'
+                size={250}
+              />
+              <Button title="close" onPress={e => setPopup(!popup)}/>
+            </View>
+          </Modal>
+          <Button title="gen QR code" onPress={e => QR(team, highGoalA, lowGoalA, highGoalO, lowGoalO, notes)}/>
+          <View style={styles.scrollContent}>
+            <View style={styles.ContainNotes}>
+              <View style={styles.ContainNotesAndMore}>
+                <TextInput
+                  multiline
+                  style={styles.notes}
+                  onChangeText={setNotes}
+                  value={notes}
+                  placeholderTextColor={"#555"}
+                  placeholder="Extra Notes..."
+                />
+              </View>
+            </View>
+          </View>
+        </ScrollView>
       </View>
     )
   }
@@ -279,10 +327,11 @@ const styles = StyleSheet.create({
   },
   notes: {
     color: '#fff',
-    marginTop: '5%',
+    marginTop: '10%',
     padding: 10,
-    width: '90%',
-    height: '25%',
+    width: '95%',
+    height: '20%',
+    marginBottom: '5%',
     borderWidth: 2,
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,
@@ -290,7 +339,6 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 10,
     borderColor: '#333',
     backgroundColor: '#222',
-    marginBottom: '10%'
   },
   team: {
     color: '#fff',
