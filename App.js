@@ -26,7 +26,7 @@ export default function App() {
   const [team, setTeam] = useState(null);
   const [match, setMatch] = useState(null);
   const [popup, setPopup] = useState(false);
-  const [rung, setRung] = useState("none");
+  const [rung, setRung] = useState(0);
   const [taxi, setTaxi] = useState(false);
   const [stateController, setStateController] = useState(0);
 
@@ -44,15 +44,15 @@ export default function App() {
 
   const QR = () => {
     let raw = {
-      'Team Number': parseInt(team),
-      'High Goal Auto': highGoalA,
-      'Low Goal Auto': lowGoalA,
-      'High Goal Operated': highGoalO,
-      'Low Goal Operated': lowGoalO,
-      'Match Number': parseInt(match),
-      'Rung Climed To': rung,
-      'Taxi': taxi,
-      'Notes': notes
+      'teamId': parseInt(team),
+      'highGoalAuto': highGoalA,
+      'lowGoalAuto': lowGoalA,
+      'highGoalOperated': highGoalO,
+      'lowGoalOperated': lowGoalO,
+      'matchId': parseInt(match),
+      'rungClimedTo': rung,
+      'taxi': taxi,
+      'notes': notes
     } //not sure how well notes is gonna work, might but out and die if you put ", ', or like {}.
     jsonData = JSON.stringify(raw);
     setPopup(!popup);
@@ -74,6 +74,7 @@ export default function App() {
           <Button title="Setup" onPress={e => setStateController(0)}/>
           <Button title="Auto" onPress={e => setStateController(1)}/>
           <Button title="Teleop" onPress={e => setStateController(2)}/>
+          <Button title="Final" onPress={e => setStateController(3)}/>
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -112,14 +113,6 @@ export default function App() {
                   placeholder="Match Number..."
                 />
               </View>
-              <TextInput
-                multiline
-                style={styles.notes}
-                onChangeText={setNotes}
-                placeholderTextColor={"#555"}
-                value={notes}
-                placeholder="Extra Notes..."
-              />
             </View>
           </View>
         </ScrollView>
@@ -133,6 +126,7 @@ export default function App() {
           <Button title="Setup" onPress={e => setStateController(0)}/>
           <Button title="Auto" onPress={e => setStateController(1)}/>
           <Button title="Teleop" onPress={e => setStateController(2)}/>
+          <Button title="Final" onPress={e => setStateController(3)}/>
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -164,6 +158,7 @@ export default function App() {
           <Button title="Setup" onPress={e => setStateController(0)}/>
           <Button title="Auto" onPress={e => setStateController(1)}/>
           <Button title="Teleop" onPress={e => setStateController(2)}/>
+          <Button title="Final" onPress={e => setStateController(3)}/>
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -172,12 +167,57 @@ export default function App() {
               <Counter title="High Goal Op" get={highGoalO} set={setHighGoalO}/>
               <Counter title="Low Goal Op" get={lowGoalO} set={setLowGoalO}/>
             </View>
-            <View>
-              <MPicker labels={["none", "low", "mid", "high", "traversal"]}/>
+            <View style={styles.containPicker}>
+              <MPicker set={setRung} labels={["none", "low", "mid", "high", "traversal"]}/>
             </View>
           </View>
         </ScrollView>
-        <Button title="gen QR code" onPress={e => QR(team, highGoalA, lowGoalA, highGoalO, lowGoalO, notes)}/>
+      </View>
+    )
+  }
+  else if(stateController == 3){
+    return (
+      <View style={styles.mainContent}>
+        {/* <Text style={styles.title}>Jordan -- Setup</Text> */}
+        <View style={styles.nav}>
+          <Button title="Setup" onPress={e => setStateController(0)}/>
+          <Button title="Auto" onPress={e => setStateController(1)}/>
+          <Button title="Teleop" onPress={e => setStateController(2)}/>
+          <Button title="Final" onPress={e => setStateController(3)}/>
+        </View>
+        <StatusBar style="auto" />
+        <ScrollView keyboardShouldPersistTaps='handled'>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={popup}
+            supportedOrientations={['landscape']}
+          >
+            <View style={styles.pop}>
+              <QRcode
+                value={jsonData}
+                ecl='L'
+                size={250}
+              />
+              <Button title="close" onPress={e => setPopup(!popup)}/>
+            </View>
+          </Modal>
+          <Button title="gen QR code" onPress={e => QR(team, highGoalA, lowGoalA, highGoalO, lowGoalO, notes)}/>
+          <View style={styles.scrollContent}>
+            <View style={styles.ContainNotes}>
+              <View style={styles.ContainNotesAndMore}>
+                <TextInput
+                  multiline
+                  style={styles.notes}
+                  onChangeText={setNotes}
+                  value={notes}
+                  placeholderTextColor={"#555"}
+                  placeholder="Extra Notes..."
+                />
+              </View>
+            </View>
+          </View>
+        </ScrollView>
       </View>
     )
   }
@@ -222,7 +262,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0f172a',
     width: '100%',
-    height: '200%'
+    height: '100%'
   },
   nav: {
     flexDirection: 'row',
@@ -235,6 +275,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flex: 1,
+    height: '100%',
     flexDirection: 'row'
   },
   lowerContentContainer: {
@@ -259,7 +300,10 @@ const styles = StyleSheet.create({
   },
   containCounter: {
     width: '45%',
-    height: '75%'
+    height: '43%'
+  },
+  containPicker: {
+    marginTop: '5%'
   },
   ContainNotes: {
     marginLeft: '5%',
@@ -277,16 +321,17 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 10,
   },
   ContainNotesAndMore: {
-    width: '100%',
-    height: '50%',
+    width: '90%',
+    height: '100%',
     flexDirection: 'row'
   },
   notes: {
     color: '#fff',
-    marginTop: '5%',
+    marginTop: '10%',
     padding: 10,
-    width: '90%',
-    height: '25%',
+    width: '95%',
+    height: '20%',
+    marginBottom: '5%',
     borderWidth: 2,
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,
@@ -294,7 +339,6 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 10,
     borderColor: '#333',
     backgroundColor: '#222',
-    marginBottom: '10%'
   },
   team: {
     color: '#fff',
@@ -314,7 +358,7 @@ const styles = StyleSheet.create({
   match: {
     color: '#fff',
     marginTop: '10%',
-    marginLeft: '10%',
+    marginLeft: '20%',
     padding: 10,
     width: '40%',
     height: '50%',
