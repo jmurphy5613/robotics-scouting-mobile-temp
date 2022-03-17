@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 10,
   },
   ContainNotesAndMore: {
-    width: '100%',
+    width: '90%',
     height: '50%',
     flexDirection: 'row'
   },

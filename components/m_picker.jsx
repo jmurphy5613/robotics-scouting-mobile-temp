@@ -28,21 +28,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 20
     },
-    button0: {
-        
-    },
-    button1: {
-
-    },
-    button2: {
-
-    },
-    button3: {
-
-    },
-    button4: {
-
-    },
 });
 
 export default function MPicker(props){
