@@ -26,7 +26,7 @@ export default function App() {
   const [team, setTeam] = useState(null);
   const [match, setMatch] = useState(null);
   const [popup, setPopup] = useState(false);
-  const [rung, setRung] = useState("none");
+  const [rung, setRung] = useState(0);
   const [taxi, setTaxi] = useState(false);
   const [stateController, setStateController] = useState(0);
 
@@ -50,7 +50,7 @@ export default function App() {
       'highGoalOperated': highGoalO,
       'lowGoalOperated': lowGoalO,
       'matchId': parseInt(match),
-      'rungClimedTo': rung,
+      'rungClimedTo': parseInt(rung),
       'taxi': taxi,
       'notes': notes
     } //not sure how well notes is gonna work, might but out and die if you put ", ', or like {}.

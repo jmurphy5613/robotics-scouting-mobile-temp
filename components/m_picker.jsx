@@ -43,27 +43,27 @@ export default function MPicker(props){
         setToggleIndex(num);
         switch(num){
             case 0:
-                props.set("none");
+                props.set(0);
                 break;
 
             case 1:
-                props.set("low");
+                props.set(4);
                 break;
             
             case 2:
-                props.set("mid");
+                props.set(6);
                 break;
             
             case 3:
-                props.set("high");
+                props.set(10);
                 break;
 
             case 4:
-                props.set("traversal");
+                props.set(15);
                 break;
             
             default:
-                props.set(`error ${num}`);
+                props.set(0);
                 break;
         }
     }
