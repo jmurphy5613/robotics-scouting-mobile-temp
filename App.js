@@ -69,7 +69,7 @@ export default function App() {
   if(stateController == 0){
     return (
       <View style={styles.mainContent}>
-        <Text style={styles.title}>Jordan -- Setup</Text>
+        {/* <Text style={styles.title}>Jordan -- Setup</Text> */}
         <View style={styles.nav}>
           <Button title="Setup" onPress={e => setStateController(0)}/>
           <Button title="Auto" onPress={e => setStateController(1)}/>
@@ -120,7 +120,6 @@ export default function App() {
                 value={notes}
                 placeholder="Extra Notes..."
               />
-              <Button title="gen QR code" onPress={e => QR(team, highGoalA, lowGoalA, highGoalO, lowGoalO, notes)}/>
             </View>
           </View>
         </ScrollView>
@@ -129,7 +128,7 @@ export default function App() {
   }else if(stateController == 1){
     return (
       <View style={styles.mainContent}>
-        <Text style={styles.title}>Jordan -- Auto -- hga:{highGoalA}, lga:{lowGoalA}</Text>
+        {/* <Text style={styles.title}>Jordan -- Auto -- hga:{highGoalA}, lga:{lowGoalA}</Text> */}
         <View style={styles.nav}>
           <Button title="Setup" onPress={e => setStateController(0)}/>
           <Button title="Auto" onPress={e => setStateController(1)}/>
@@ -160,7 +159,7 @@ export default function App() {
   }else if(stateController == 2){
     return (
       <View style={styles.mainContent}>
-        <Text style={styles.title}>Jordan -- Teleop -- hgo:{highGoalO}, lgo: {lowGoalO}</Text>
+        {/* <Text style={styles.title}>Jordan -- Teleop -- hgo:{highGoalO}, lgo: {lowGoalO}</Text> */}
         <View style={styles.nav}>
           <Button title="Setup" onPress={e => setStateController(0)}/>
           <Button title="Auto" onPress={e => setStateController(1)}/>
@@ -178,6 +177,7 @@ export default function App() {
             </View>
           </View>
         </ScrollView>
+        <Button title="gen QR code" onPress={e => QR(team, highGoalA, lowGoalA, highGoalO, lowGoalO, notes)}/>
       </View>
     )
   }
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
   },
   ContainNotes: {
     marginLeft: '5%',
-    width: '45%',
+    width: '100%',
     height: '100%',
   },
   dropdown: {
