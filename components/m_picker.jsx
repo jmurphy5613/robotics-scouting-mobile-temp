@@ -5,8 +5,7 @@ import MPickerButton from './m_p_button';
 const styles = StyleSheet.create({
     master: {
         marginLeft: '25%',
-        marginTop: '5%',
-        height: '50%',
+        height: '100%',
         width: '100%'
     },
     on: {

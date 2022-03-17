@@ -164,7 +164,7 @@ export default function App() {
               <Counter title="High Goal Op" get={highGoalO} set={setHighGoalO}/>
               <Counter title="Low Goal Op" get={lowGoalO} set={setLowGoalO}/>
             </View>
-            <View>
+            <View style={styles.containPicker}>
               <MPicker set={setRung} labels={["none", "low", "mid", "high", "traversal"]}/>
             </View>
           </View>
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0f172a',
     width: '100%',
-    height: '200%'
+    height: '100%'
   },
   nav: {
     flexDirection: 'row',
@@ -227,6 +227,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flex: 1,
+    height: '100%',
     flexDirection: 'row'
   },
   lowerContentContainer: {
@@ -251,7 +252,10 @@ const styles = StyleSheet.create({
   },
   containCounter: {
     width: '45%',
-    height: '75%'
+    height: '43%'
+  },
+  containPicker: {
+    marginTop: '5%'
   },
   ContainNotes: {
     marginLeft: '5%',
