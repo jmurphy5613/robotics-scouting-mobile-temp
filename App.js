@@ -265,6 +265,7 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   nav: {
+    marginTop: 30,
     flexDirection: 'row',
     justifyContent: 'center',
   },
