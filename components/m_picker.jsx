@@ -37,7 +37,28 @@ const styles = StyleSheet.create({
 });
 
 export default function MPicker(props){
-    const [toggleIndex, setToggleIndex] = useState(0);
+    const gigaGet = () => {
+        switch(props.get){
+        case 0:
+            return 0;
+        case 4:
+            return 1;
+
+        case 6:
+            return 2;
+
+        case 10:
+            return 3;
+
+        case 15:
+            return 4;
+
+        default:
+            return 0;
+
+    }
+}
+    const [toggleIndex, setToggleIndex] = useState(gigaGet());
     const passUpward = (num) => {
         setToggleIndex(num);
         switch(num){

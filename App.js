@@ -45,7 +45,7 @@ export default function App() {
   const QR = () => {
     let raw = {
       'teamId': parseInt(team),
-      'highGoalAuto': highGoalA,
+      'highGoalx': highGoalA,
       'lowGoalAuto': lowGoalA,
       'highGoalOperated': highGoalO,
       'lowGoalOperated': lowGoalO,
@@ -168,7 +168,7 @@ export default function App() {
               <Counter title="Low Goal Op" get={lowGoalO} set={setLowGoalO}/>
             </View>
             <View style={styles.containPicker}>
-              <MPicker set={setRung} labels={["none", "low", "mid", "high", "traversal"]}/>
+              <MPicker get={rung} set={setRung} labels={["none", "low", "mid", "high", "traversal"]}/>
             </View>
           </View>
         </ScrollView>
@@ -187,6 +187,20 @@ export default function App() {
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
+          <View style={styles.scrollContent}>
+            <View style={styles.ContainNotes}>
+              <View style={styles.ContainNotesAndMore}>
+                <TextInput
+                  multiline
+                  style={styles.notes}
+                  onChangeText={setNotes}
+                  value={notes}
+                  placeholderTextColor={"#555"}
+                  placeholder="Extra Notes..."
+                />
+              </View>
+            </View>
+          </View>
           <Modal
             animationType="slide"
             transparent={true}
@@ -203,20 +217,6 @@ export default function App() {
             </View>
           </Modal>
           <Button title="gen QR code" onPress={e => QR(team, highGoalA, lowGoalA, highGoalO, lowGoalO, notes)}/>
-          <View style={styles.scrollContent}>
-            <View style={styles.ContainNotes}>
-              <View style={styles.ContainNotesAndMore}>
-                <TextInput
-                  multiline
-                  style={styles.notes}
-                  onChangeText={setNotes}
-                  value={notes}
-                  placeholderTextColor={"#555"}
-                  placeholder="Extra Notes..."
-                />
-              </View>
-            </View>
-          </View>
         </ScrollView>
       </View>
     )
