@@ -129,7 +129,6 @@ export default function App() {
           <Button title="Final" onPress={e => setStateController(3)}/>
         </View>
         <StatusBar style="auto" />
-        <ScrollView keyboardShouldPersistTaps='handled'>
           <View style={styles.scrollContent}>
             <View style={styles.containCounter}>
               <Counter title="High Goal Auto" get={highGoalA} set={setHighGoalA}/>
@@ -147,7 +146,6 @@ export default function App() {
               />
             </View>
           </View>
-        </ScrollView>
       </View>
     )
   }else if(stateController == 2){
@@ -262,7 +260,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0f172a',
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   nav: {
     marginTop: 30,
