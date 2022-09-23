@@ -8,6 +8,8 @@ import MPicker from './components/m_picker';
 import { TextInput } from 'react-native';
 import { Modal } from 'react-native';
 import QRcode from 'react-native-qrcode-svg';
+import AsyncStorage  from '@react-native-async-storage/async-storage';
+//yarn add @react-native-async-storage/async-storage
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 async function changeOrientation() {
   await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
@@ -28,6 +30,7 @@ export default function App() {
   const [popup, setPopup] = useState(false);
   const [rung, setRung] = useState(0);
   const [taxi, setTaxi] = useState(false);
+  const [data, setData] = useState([]);
   const [stateController, setStateController] = useState(0);
 
   if(!isLoaded) {
@@ -58,6 +61,67 @@ export default function App() {
     setPopup(!popup);
   }
 
+  let dataList = [];
+
+  const key = "robot-data-list";
+
+  const deleteData = async (index = -1) => {
+    let temp = null;
+    if (index != -1) {
+      try {
+        temp = await AsyncStorage.getItem(key);
+      } catch (e){
+        console.log(e);
+        return;
+      }
+
+      try {
+        dataList = temp == null ? [] : JSON.parse(temp);
+        dataList.splice(index, 1);
+        setData(dataList);
+        await AsyncStorage.setItem(key, JSON.stringify(dataList));
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        setData([]);
+        dataList = [];
+        await AsyncStorage.removeItem(key);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+
+  const pushSaveData = async () => {
+    let temp = null;
+    //i dont think any of this is going to work. oh well
+    try {
+      temp = await AsyncStorage.getItem(key);
+    } finally {}
+
+    try {
+      dataList = temp == null ? [] : JSON.parse(temp);
+      let raw = {
+        'teamId': parseInt(team),
+        'highGoalAuto': highGoalA,
+        'lowGoalAuto': lowGoalA,
+        'highGoalOperated': highGoalO,
+        'lowGoalOperated': lowGoalO,
+        'matchId': parseInt(match),
+        'rungClimedTo': rung,
+        'taxi': taxi,
+        'notes': notes
+      };
+      dataList.push(JSON.stringify(raw));
+      setData(dataList);
+      await AsyncStorage.setItem(key, JSON.stringify(dataList));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   const logTaxi = () => {
     if(taxi){
       return 'true'
@@ -75,6 +139,7 @@ export default function App() {
           <Button title="Auto" onPress={e => setStateController(1)}/>
           <Button title="Teleop" onPress={e => setStateController(2)}/>
           <Button title="Final" onPress={e => setStateController(3)}/>
+          <Button title="Data" onPress={e => setStateController(4) }/>
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -127,6 +192,7 @@ export default function App() {
           <Button title="Auto" onPress={e => setStateController(1)}/>
           <Button title="Teleop" onPress={e => setStateController(2)}/>
           <Button title="Final" onPress={e => setStateController(3)}/>
+          <Button title="Data" onPress={e => setStateController(4) }/>
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -159,6 +225,7 @@ export default function App() {
           <Button title="Auto" onPress={e => setStateController(1)}/>
           <Button title="Teleop" onPress={e => setStateController(2)}/>
           <Button title="Final" onPress={e => setStateController(3)}/>
+          <Button title="Data" onPress={e => setStateController(4) }/>
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -184,6 +251,7 @@ export default function App() {
           <Button title="Auto" onPress={e => setStateController(1)}/>
           <Button title="Teleop" onPress={e => setStateController(2)}/>
           <Button title="Final" onPress={e => setStateController(3)}/>
+          <Button title="Data" onPress={e => setStateController(4) }/>
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -199,7 +267,11 @@ export default function App() {
                 ecl='L'
                 size={250}
               />
-              <Button title="close" onPress={e => setPopup(!popup)}/>
+              <View>
+                <Button title="close" onPress={e => setPopup(!popup)}/>
+                <Button title="save" onPress={e => pushSaveData() }/>
+                <Button title="delete" onPress={e => deleteData() } />
+              </View>
             </View>
           </Modal>
           <Button title="gen QR code" onPress={e => QR(team, highGoalA, lowGoalA, highGoalO, lowGoalO, notes)}/>
@@ -217,6 +289,27 @@ export default function App() {
               </View>
             </View>
           </View>
+        </ScrollView>
+      </View>
+    )
+  }
+  else if(stateController == 4){
+    return (
+      <View style={styles.mainContent}>
+        {/* <Text style={styles.title}>Jordan -- Setup</Text> */}
+        <View style={styles.nav}>
+          <Button title="Setup" onPress={e => setStateController(0)}/>
+          <Button title="Auto" onPress={e => setStateController(1)}/>
+          <Button title="Teleop" onPress={e => setStateController(2)}/>
+          <Button title="Final" onPress={e => setStateController(3)}/>
+          <Button title="Data" onPress={e => setStateController(4) }/>
+        </View>
+        <StatusBar style="auto" />
+        <ScrollView keyboardShouldPersistTaps='handled'>
+          <Button title="cryArea" onPress={ async (e) => {
+            console.log(await AsyncStorage.getItem(key));
+          } }/>
+          <Text>PAIN</Text>
         </ScrollView>
       </View>
     )

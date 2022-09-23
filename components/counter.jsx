@@ -56,8 +56,8 @@ export default function Counter(props){
             {/* this is the button container. im sorry that there are like five view tags, the button doesn't support styles :cryscream:*/}
             <Text style={styles.title}>{props.title}</Text>
             <View style={styles.contain}>
-                <TouchableOpacity style={styles.add} onPress={e => {props.set(props.get+1);}}>
-                    <Button color="#000"  title="add" onPress={e => {props.set(props.get+1);}}/>
+                <TouchableOpacity style={styles.add} onPress={e => {props.set(props.get+1);} }>
+                    <Button color="#000"  title="add" onPress={e => {props.set(props.get+1);} }/>
                 </TouchableOpacity>
                 <View style={styles.countBox}>
                     <Text style={styles.c}>
