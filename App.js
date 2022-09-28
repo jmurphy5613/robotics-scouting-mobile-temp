@@ -15,6 +15,8 @@ async function changeOrientation() {
   await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
 }
 
+import TeamGrid from './components/team-grid';
+
 let jsonData;
 
 export default function App() {
@@ -279,10 +281,10 @@ export default function App() {
                 ecl='L'
                 size={250}
               />
-              <View>
+              <View style={styles["qrButtons"]}>
                 <Button title="close" onPress={e => setPopup(!popup)}/>
                 <Button title="save" onPress={e => pushSaveData() }/>
-                <Button title="delete" onPress={e => deleteData() } />
+                {/* <Button title="delete" onPress={e => deleteData() } /> */}
               </View>
             </View>
           </Modal>
@@ -303,11 +305,11 @@ export default function App() {
           <Button title="Data" onPress={e => setStateController(4) }/>
         </View>
         <StatusBar style="auto" />
-        <ScrollView keyboardShouldPersistTaps='handled'>
-          <Button title="cryArea" onPress={ async (e) => {
+        <ScrollView style={{ width: '100%' }} keyboardShouldPersistTaps='handled'>
+          {/* <Button title="cryArea" onPress={ async (e) => {
             console.log(await AsyncStorage.getItem(key));
-          } }/>
-          <Text>PAIN</Text>
+          } }/> */}
+          <TeamGrid />
         </ScrollView>
       </View>
     )
@@ -477,4 +479,8 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 10,
     marginLeft: '20%'
   },
+  qrButtons: {
+    display: 'flex',
+    flexDirection: 'row',
+  }
 });
