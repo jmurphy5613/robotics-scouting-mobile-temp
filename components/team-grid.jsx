@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 
 const key = 'robot-data-list';
 
-const TeamGrid = () => {
+const TeamGrid = (props) => {
 
     const [data, setData] = useState([]);
 
@@ -56,12 +56,14 @@ const TeamGrid = () => {
                 const data = JSON.parse(element);
                 return (
                     <View style={styles.gridItem}>
-                        <Text style={styles.gridTitle}>Match {data.matchId}</Text>
+                        <Text onPress={() => {
+                            props.setCurrentMatchId(data.id);
+                        }} style={styles.gridTitle}>Match {data.matchId}</Text>
                     </View>
                 )
             })}
             <View style={{ width: '100%' }}>
-                <Button  title='Push to Central Computer' />
+                <Button title='Push to Central Computer' />
             </View>
         </View>
     )

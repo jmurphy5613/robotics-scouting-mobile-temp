@@ -35,6 +35,8 @@ export default function App() {
   const [data, setData] = useState([]);
   const [stateController, setStateController] = useState(0);
 
+  const [currentMatchId, setCurrentMatchId] = useState(0);
+
   if(!isLoaded) {
     return (
       <AppLoading 
@@ -116,6 +118,20 @@ export default function App() {
         'taxi': taxi,
         'notes': notes
       };
+      const currentData = await AsyncStorage.getItem(key);
+      //check if the match is already in the list,  if it is, return
+      if (currentData != null) {
+        const parsedData = JSON.parse(currentData);
+        for (let i = 0; i < parsedData.length; i++) {
+          if (parsedData[i].matchId == raw.matchId) {
+            return;
+          }
+        }
+      }
+      //check if teamId or matchId is null, if it is, return
+      if (raw.teamId == null || raw.matchId == null) {
+        return;
+      }
       dataList.push(JSON.stringify(raw));
       setData(dataList);
       await AsyncStorage.setItem(key, JSON.stringify(dataList));
@@ -142,6 +158,7 @@ export default function App() {
           <Button title="Teleop" onPress={e => setStateController(2)}/>
           <Button title="Final" onPress={e => setStateController(3)}/>
           <Button title="Data" onPress={e => setStateController(4) }/>
+          <Button title="Match View" onPress={e => setStateController(5)}/>
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -195,6 +212,8 @@ export default function App() {
           <Button title="Teleop" onPress={e => setStateController(2)}/>
           <Button title="Final" onPress={e => setStateController(3)}/>
           <Button title="Data" onPress={e => setStateController(4) }/>
+          <Button title="Match View" onPress={e => setStateController(5)}/>
+
         </View>
         <StatusBar style="auto" />
           <View style={styles.scrollContent}>
@@ -226,6 +245,8 @@ export default function App() {
           <Button title="Teleop" onPress={e => setStateController(2)}/>
           <Button title="Final" onPress={e => setStateController(3)}/>
           <Button title="Data" onPress={e => setStateController(4) }/>
+          <Button title="Match View" onPress={e => setStateController(5)}/>
+
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -252,6 +273,8 @@ export default function App() {
           <Button title="Teleop" onPress={e => setStateController(2)}/>
           <Button title="Final" onPress={e => setStateController(3)}/>
           <Button title="Data" onPress={e => setStateController(4) }/>
+          <Button title="Match View" onPress={e => setStateController(5)}/>
+
         </View>
         <StatusBar style="auto" />
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -303,13 +326,14 @@ export default function App() {
           <Button title="Teleop" onPress={e => setStateController(2)}/>
           <Button title="Final" onPress={e => setStateController(3)}/>
           <Button title="Data" onPress={e => setStateController(4) }/>
+          <Button title="Match View" onPress={e => setStateController(5)}/>
         </View>
         <StatusBar style="auto" />
         <ScrollView style={{ width: '100%' }} keyboardShouldPersistTaps='handled'>
           {/* <Button title="cryArea" onPress={ async (e) => {
             console.log(await AsyncStorage.getItem(key));
           } }/> */}
-          <TeamGrid />
+          <TeamGrid setCurrentMatchId={setCurrentMatchId} />
         </ScrollView>
       </View>
     )
@@ -344,6 +368,19 @@ export default function App() {
         />
       </Picker>
     */}
+    )
+  } else if(stateController === 5) {
+    return (
+      <View style={styles.mainContent}>
+        <View style={styles.nav}>
+          <Button title="Setup" onPress={e => setStateController(0)}/>
+          <Button title="Auto" onPress={e => setStateController(1)}/>
+          <Button title="Teleop" onPress={e => setStateController(2)}/>
+          <Button title="Final" onPress={e => setStateController(3)}/>
+          <Button title="Data" onPress={e => setStateController(4) }/>
+          <Button title="Match View" onPress={e => setStateController(5)}/>
+        </View>
+      </View>
     )
   }
 }
