@@ -16,6 +16,7 @@ async function changeOrientation() {
 }
 
 import TeamGrid from './components/team-grid';
+import MatchView from './components/matchView';
 
 let jsonData;
 
@@ -52,7 +53,7 @@ export default function App() {
   const QR = () => {
     let raw = {
       'teamId': parseInt(team),
-      'highGoalx': highGoalA,
+      'highGoalAuto': highGoalA,
       'lowGoalAuto': lowGoalA,
       'highGoalOperated': highGoalO,
       'lowGoalOperated': lowGoalO,
@@ -380,6 +381,7 @@ export default function App() {
           <Button title="Data" onPress={e => setStateController(4) }/>
           <Button title="Match View" onPress={e => setStateController(5)}/>
         </View>
+        <MatchView />
       </View>
     )
   }
