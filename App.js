@@ -31,6 +31,7 @@ export default function App() {
   const [team, setTeam] = useState(null);
   const [match, setMatch] = useState(null);
   const [popup, setPopup] = useState(false);
+  const [deletePopup, setDeletePopup] = useState(false);
   const [rung, setRung] = useState(0);
   const [taxi, setTaxi] = useState(false);
   const [data, setData] = useState([]);

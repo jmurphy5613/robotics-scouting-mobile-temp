@@ -52,6 +52,9 @@ const TeamGrid = (props) => {
         try {
             await AsyncStorage.setItem(key, JSON.stringify(newData))
             setData(newData)
+            if (newData === null) {
+                setData([]);
+            }
         } catch(e) {
             console.log(e)
         }
@@ -59,8 +62,8 @@ const TeamGrid = (props) => {
 
     const fetchData = async () => {
         try {
-            const data = await AsyncStorage.getItem(key);
-            setData(JSON.parse(data));
+            const _datat = await AsyncStorage.getItem(key);
+            setData((JSON.parse(_datat) === null) ? [] : JSON.parse(_datat));
         } catch (e) {
             console.log(e);
         }
@@ -80,19 +83,21 @@ const TeamGrid = (props) => {
 
     return (
         <View style={styles.grid}>
-            {data.map((element, index) => {
-                const data = JSON.parse(element);
-                return (
-                    <View key={index} style={styles.gridItem}>
-                        <Text onPress={() => {
-                            props.setCurrentMatchId(data.id);
-                        }} style={styles.gridTitle}>Match {data.matchId}</Text>
-                        <Button title='Delete' color={'red'} onPress={() => {
-                            deleteIndex(index)
-                        }} />
-                    </View>
-                )
-            })}
+            {
+                    data.map((element, index) => {
+                    const data = JSON.parse(element);
+                    return (
+                        <View key={index} style={styles.gridItem}>
+                            <Text onPress={() => {
+                                props.setCurrentMatchId(data.id);
+                            }} style={styles.gridTitle}>Match {data.matchId}</Text>
+                            <Button title='Delete' color={'red'} onPress={() => {
+                                deleteIndex(index)
+                            }} />
+                        </View>
+                    )
+                })
+            }
             <View style={{ width: '100%' }}>
                 <Button onPress={() => {
                     data.map((element, index) => {
