@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import AsyncStorage  from '@react-native-async-storage/async-storage';
 import axios from 'axios'
 import { Modal } from 'react-native';
+import QRcode from 'react-native-qrcode-svg';
 
 const styles = StyleSheet.create({
     grid: {
@@ -60,8 +61,11 @@ const key = 'robot-data-list';
 const TeamGrid = (props) => {
 
     const [data, setData] = useState([]);
-    const [popup, setPopup] = useState(false);
-    const [delIndex, setDelIndex] = useState(-1);
+    const [delPopup, setDelPopup] = useState(false);
+    const [qrPopup, setQrPopup] = useState(false);
+    const [jsonDat, setJsonDat] = useState({});
+    const [sent, setSent] = useState([]);
+    const [matchIndex, setMatchIndex] = useState(-1);
 
     const deleteIndex = async (index) => {
         if (index == -1) {
@@ -91,9 +95,15 @@ const TeamGrid = (props) => {
         }
     }
 
+    const QRCodePopup = (index) => {
+        setQrPopup(true);
+        setMatchIndex(index);
+
+    }
+
     const deletePopup = (index) => {
-        setPopup(true);
-        setDelIndex(index);
+        setDelPopup(true);
+        setMatchIndex(index);
         //deleteIndex(index);
     }
 
@@ -127,6 +137,7 @@ const TeamGrid = (props) => {
                         <View key={index} style={styles.gridItem}>
                             <Text onPress={() => {
                                 props.setCurrentMatchId(data.id);
+                                QRCodePopup(index);
                             }} style={styles.gridTitle}>Match {data.matchId}</Text>
                             <Button title='Delete' color={'red'} onPress={() => {
                                 deletePopup(index);
@@ -138,21 +149,39 @@ const TeamGrid = (props) => {
             <View style={{ width: '100%' }}>
 
                 <Modal
-                animationType="slide"
-                transparent={true}
-                visible={popup}
-                supportedOrientations={['landscape']}
-            >
-                <View style={styles.pop}>
-                    <Text style={styles.confirm}>are you sure that you really, {"\n"} <Text style={styles.bold}>REALLY</Text> want to delete this?</Text>
-                    <Button title="Yes, Delete it now" onPress={ () => { deleteIndex(delIndex); setDelIndex(-1); setPopup(false); } }/>
-                    <Button title="No, Go back" onPress={ () => { setDelIndex(-1); setPopup(false); } }/>
-                </View>
-            </Modal>
+                    animationType="slide"
+                    transparent={true}
+                    visible={delPopup}
+                    supportedOrientations={['landscape']}
+                >
+                    <View style={styles.pop}>
+                        <Text style={styles.confirm}>are you sure that you really, {"\n"} <Text style={styles.bold}>REALLY</Text> want to delete this?</Text>
+                        <Button title="Yes, Delete it now" onPress={ () => { deleteIndex(matchIndex); setMatchIndex(-1); setDelPopup(false); } }/>
+                        <Button title="No, Go back" onPress={ () => { setMatchIndex(-1); setDelPopup(false); } }/>
+                    </View>
+                </Modal>
+
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={qrPopup}
+                    supportedOrientations={['landscape']}
+                >
+                    <View style={styles.pop}>
+                        <QRcode
+                            value={data[matchIndex]}
+                            ecl='L'
+                            size={250}
+                        />
+                        <Button title="Close" onPress={ () => { setMatchIndex(-1); setQrPopup(false); } }/>
+                    </View>
+                </Modal>
 
                 <Button onPress={() => {
+                    //
+                    setSent([]);
                     data.map((element, index) => {
-                        let newElement = JSON.parse(element)
+                        let newElement = JSON.parse(element);
                         console.log(newElement)
                         console.log(newElement.teamId)
                         console.log(newElement.matchId)
@@ -160,21 +189,42 @@ const TeamGrid = (props) => {
                         console.log(newElement.matchId)
                         console.log(newElement.lowGoalAuto)
                         console.log(newElement.lowGoalOperated)
-                        console.log(newElement.rungClimbedTo)
+                        console.log((newElement.rungClimbedTo === undefined) ? newElement.rungClimedTo : newElement.rungClimbedTo)
+
+                        //sent.push({ind: index, mat: (newElement.matchId === null) ? -1 : newElement.matchId, team: (newElement.teamId === null) ? -1 : newElement.teamId});
                         
                         axios.post('https://what-am-i-doing-production.up.railway.app/game/add-game', {
-                            teamId: newElement.teamId,
-                            matchId: newElement.matchId,
+                            teamId: (newElement.teamId === null) ? -1 : newElement.teamId,
+                            matchId: (newElement.matchId === null) ? -1 : newElement.matchId,
                             highGoalAuto: newElement.highGoalAuto,
                             lowGoalAuto: newElement.lowGoalAuto,
                             highGoalOperated: newElement.highGoalOperated,
                             lowGoalOperated: newElement.lowGoalOperated,
-                            rungClimbedTo: newElement.rungClimedTo,
+                            rungClimbedTo: (newElement.rungClimbedTo === undefined) ? newElement.rungClimedTo : newElement.rungClimbedTo,
                             taxi: newElement.taxi,
-                            notes: ''
-                        }).then(() => {
-                            console.log("heyyyy")
-                        })
+                            notes: (newElement.notes === null) ? " " : newElement.notes
+                        }).then( async (response) => {
+                            
+                            let j = data.map((val, ind) => { 
+                                let datVal = JSON.parse(val);
+                                let responseVal = JSON.parse(response.config.data);
+
+                                if (datVal.matchId === responseVal.matchId && datVal.teamId === responseVal.teamId) { 
+                                    if ( datVal.matchId !== null && datVal.teamId !== null ) {
+                                        return ind;
+                                    }
+                                }
+                            });
+
+                            deleteIndex(j);
+
+                            //sent.push(j);
+
+                            /*for (let i = 0; i < sent.length; i++) {
+                                deleteIndex(sent[i]);
+                            }*/
+
+                        }).catch( (error) => { console.log(error) } )
                     })
 
                 }} title='Push to Central Computer' />
