@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Button } from 'react-native';
 import { useEffect, useState } from 'react';
 import AsyncStorage  from '@react-native-async-storage/async-storage';
 import axios from 'axios'
+import { Modal } from 'react-native';
 
 const styles = StyleSheet.create({
     grid: {
@@ -12,6 +13,20 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginTop: 20,
         paddingBottom: 40,
+    },
+    pop: {
+        backgroundColor: '#fff',
+        height: '90%',
+        marginTop: '2%',
+        width: '60%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomStartRadius: 10,
+        borderBottomEndRadius: 10,
+        borderTopStartRadius: 10,
+        borderTopEndRadius: 10,
+        marginLeft: '20%'
     },
     gridItem: {
         width: '30%',
@@ -35,8 +50,14 @@ const key = 'robot-data-list';
 const TeamGrid = (props) => {
 
     const [data, setData] = useState([]);
+    const [popup, setPopup] = useState(false);
+    const [delIndex, setDelIndex] = useState(-1);
 
     const deleteIndex = async (index) => {
+        if (index == -1) {
+            return;
+        }
+
         let newData = [];
         try {
             await AsyncStorage.getItem(key).then(e => {
@@ -58,6 +79,12 @@ const TeamGrid = (props) => {
         } catch(e) {
             console.log(e)
         }
+    }
+
+    const deletePopup = (index) => {
+        setPopup(true);
+        setDelIndex(index);
+        //deleteIndex(index);
     }
 
     const fetchData = async () => {
@@ -92,13 +119,27 @@ const TeamGrid = (props) => {
                                 props.setCurrentMatchId(data.id);
                             }} style={styles.gridTitle}>Match {data.matchId}</Text>
                             <Button title='Delete' color={'red'} onPress={() => {
-                                deleteIndex(index)
+                                deletePopup(index);
                             }} />
                         </View>
                     )
                 })
             }
             <View style={{ width: '100%' }}>
+
+                <Modal
+                animationType="slide"
+                transparent={true}
+                visible={popup}
+                supportedOrientations={['landscape']}
+            >
+                <View style={styles.pop}>
+                    <Text>are you sure that you really, REALLY want to delete this?</Text>
+                    <Button title="Yes, delete it now" onPress={ () => { deleteIndex(delIndex); setDelIndex(-1); setPopup(false); } }/>
+                    <Button title="No, im sorry" onPress={ () => { setDelIndex(-1); setPopup(false); } }/>
+                </View>
+            </Modal>
+
                 <Button onPress={() => {
                     data.map((element, index) => {
                         let newElement = JSON.parse(element)
