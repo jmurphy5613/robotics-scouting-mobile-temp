@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Button } from 'react-native';
 import { useEffect, useState } from 'react';
 import AsyncStorage  from '@react-native-async-storage/async-storage';
 import axios from 'axios'
+import { Modal } from 'react-native';
 
 const styles = StyleSheet.create({
     grid: {
@@ -12,6 +13,20 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginTop: 20,
         paddingBottom: 40,
+    },
+    pop: {
+        backgroundColor: '#fff',
+        height: '90%',
+        marginTop: '2%',
+        width: '60%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomStartRadius: 10,
+        borderBottomEndRadius: 10,
+        borderTopStartRadius: 10,
+        borderTopEndRadius: 10,
+        marginLeft: '20%'
     },
     gridItem: {
         width: '30%',
@@ -27,6 +42,16 @@ const styles = StyleSheet.create({
         color: 'white',
         marginRight: 20,
         fontSize: 30
+    },
+    confirm: {
+        color: "#f00",
+        fontSize: 30,
+        textAlign: 'center',
+        shadowRadius: 3,
+        margin: 20
+    },
+    bold: {
+        fontWeight: 'bold'
     }
 })
 
@@ -35,8 +60,14 @@ const key = 'robot-data-list';
 const TeamGrid = (props) => {
 
     const [data, setData] = useState([]);
+    const [popup, setPopup] = useState(false);
+    const [delIndex, setDelIndex] = useState(-1);
 
     const deleteIndex = async (index) => {
+        if (index == -1) {
+            return;
+        }
+
         let newData = [];
         try {
             await AsyncStorage.getItem(key).then(e => {
@@ -52,15 +83,24 @@ const TeamGrid = (props) => {
         try {
             await AsyncStorage.setItem(key, JSON.stringify(newData))
             setData(newData)
+            if (newData === null) {
+                setData([]);
+            }
         } catch(e) {
             console.log(e)
         }
     }
 
+    const deletePopup = (index) => {
+        setPopup(true);
+        setDelIndex(index);
+        //deleteIndex(index);
+    }
+
     const fetchData = async () => {
         try {
-            const data = await AsyncStorage.getItem(key);
-            setData(JSON.parse(data));
+            const _datat = await AsyncStorage.getItem(key);
+            setData((JSON.parse(_datat) === null) ? [] : JSON.parse(_datat));
         } catch (e) {
             console.log(e);
         }
@@ -80,20 +120,36 @@ const TeamGrid = (props) => {
 
     return (
         <View style={styles.grid}>
-            {data.map((element, index) => {
-                const data = JSON.parse(element);
-                return (
-                    <View key={index} style={styles.gridItem}>
-                        <Text onPress={() => {
-                            props.setCurrentMatchId(data.id);
-                        }} style={styles.gridTitle}>Match {data.matchId}</Text>
-                        <Button title='Delete' color={'red'} onPress={() => {
-                            deleteIndex(index)
-                        }} />
-                    </View>
-                )
-            })}
+            {
+                    data.map((element, index) => {
+                    const data = JSON.parse(element);
+                    return (
+                        <View key={index} style={styles.gridItem}>
+                            <Text onPress={() => {
+                                props.setCurrentMatchId(data.id);
+                            }} style={styles.gridTitle}>Match {data.matchId}</Text>
+                            <Button title='Delete' color={'red'} onPress={() => {
+                                deletePopup(index);
+                            }} />
+                        </View>
+                    )
+                })
+            }
             <View style={{ width: '100%' }}>
+
+                <Modal
+                animationType="slide"
+                transparent={true}
+                visible={popup}
+                supportedOrientations={['landscape']}
+            >
+                <View style={styles.pop}>
+                    <Text style={styles.confirm}>are you sure that you really, {"\n"} <Text style={styles.bold}>REALLY</Text> want to delete this?</Text>
+                    <Button title="Yes, Delete it now" onPress={ () => { deleteIndex(delIndex); setDelIndex(-1); setPopup(false); } }/>
+                    <Button title="No, Go back" onPress={ () => { setDelIndex(-1); setPopup(false); } }/>
+                </View>
+            </Modal>
+
                 <Button onPress={() => {
                     data.map((element, index) => {
                         let newElement = JSON.parse(element)
