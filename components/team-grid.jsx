@@ -42,6 +42,16 @@ const styles = StyleSheet.create({
         color: 'white',
         marginRight: 20,
         fontSize: 30
+    },
+    confirm: {
+        color: "#f00",
+        fontSize: 30,
+        textAlign: 'center',
+        shadowRadius: 3,
+        margin: 20
+    },
+    bold: {
+        fontWeight: 'bold'
     }
 })
 
@@ -134,9 +144,9 @@ const TeamGrid = (props) => {
                 supportedOrientations={['landscape']}
             >
                 <View style={styles.pop}>
-                    <Text>are you sure that you really, REALLY want to delete this?</Text>
-                    <Button title="Yes, delete it now" onPress={ () => { deleteIndex(delIndex); setDelIndex(-1); setPopup(false); } }/>
-                    <Button title="No, im sorry" onPress={ () => { setDelIndex(-1); setPopup(false); } }/>
+                    <Text style={styles.confirm}>are you sure that you really, {"\n"} <Text style={styles.bold}>REALLY</Text> want to delete this?</Text>
+                    <Button title="Yes, Delete it now" onPress={ () => { deleteIndex(delIndex); setDelIndex(-1); setPopup(false); } }/>
+                    <Button title="No, Go back" onPress={ () => { setDelIndex(-1); setPopup(false); } }/>
                 </View>
             </Modal>
 
