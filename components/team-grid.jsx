@@ -204,6 +204,12 @@ const TeamGrid = (props) => {
                             taxi: newElement.taxi,
                             notes: (newElement.notes === null) ? " " : newElement.notes
                         }).then( async (response) => {
+
+                            console.log(response);
+
+                            if (response.status != 200) {
+                                return;
+                            }
                             
                             let j = data.map((val, ind) => { 
                                 let datVal = JSON.parse(val);
