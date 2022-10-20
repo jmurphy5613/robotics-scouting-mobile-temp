@@ -50,6 +50,28 @@ export default function App() {
     )
   }
 
+  const clearFields = () => {
+    setHighGoalA(0);
+    setHighGoalO(0);
+    setLowGoalA(0);
+    setLowGoalO(0);
+    setNotes("");
+    setTeam(null);
+    setMatch(null);
+    setRung(0);
+    setTaxi(false);
+  }
+
+  const restoreFields = (raw) => {
+    let j = JSON.parse(raw);
+
+    if (j === null) {
+      return;
+    }
+
+    
+  }
+
   const QR = () => {
     let raw = {
       'teamId': parseInt(team),
@@ -154,10 +176,10 @@ export default function App() {
       <View style={styles.mainContent}>
         {/* <Text style={styles.title}>Jordan -- Setup</Text> */}
         <View style={styles.nav}>
-          <Button title="Setup" onPress={e => setStateController(0)}/>
-          <Button title="Auto" onPress={e => setStateController(1)}/>
-          <Button title="Teleop" onPress={e => setStateController(2)}/>
-          <Button title="Final" onPress={e => setStateController(3)}/>
+          <Button title="Setup" onPress={e => setStateController(0) }/>
+          <Button title="Auto" onPress={e => setStateController(1) }/>
+          <Button title="Teleop" onPress={e => setStateController(2) }/>
+          <Button title="Final" onPress={e => setStateController(3) }/>
           <Button title="Data" onPress={e => setStateController(4) }/>
           
         </View>
@@ -307,7 +329,7 @@ export default function App() {
               />
               <View style={styles["qrButtons"]}>
                 <Button title="close" onPress={e => setPopup(!popup)}/>
-                <Button title="save" onPress={e => {pushSaveData(); setPopup(!popup)} }/>
+                <Button title="save" onPress={e => {pushSaveData(); clearFields(); setPopup(!popup)} }/>
                 {/* <Button title="delete" onPress={e => deleteData() } /> */}
               </View>
             </View>
