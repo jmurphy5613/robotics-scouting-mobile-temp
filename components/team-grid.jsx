@@ -173,6 +173,7 @@ const TeamGrid = (props) => {
                             ecl='L'
                             size={250}
                         />
+                        <Button title="Restore" onPress={ () => { let result = props.restoreFields(data[matchIndex]); if (result) {deleteIndex(matchIndex)} ; setMatchIndex(-1); setQrPopup(false); } }/>
                         <Button title="Close" onPress={ () => { setMatchIndex(-1); setQrPopup(false); } }/>
                     </View>
                 </Modal>

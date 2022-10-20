@@ -66,10 +66,22 @@ export default function App() {
     let j = JSON.parse(raw);
 
     if (j === null) {
-      return;
+      return false;
     }
 
-    
+    console.log(j);
+
+    setHighGoalA(j.highGoalAuto);
+    setHighGoalO(j.highGoalOperated);
+    setLowGoalA(j.lowGoalAuto);
+    setLowGoalO(j.lowGoalOperated);
+    setNotes(j.notes);
+    setTeam(j.teamId.toString());
+    setMatch(j.matchId.toString());
+    setRung((j.rungClimedTo === null || j.rungClimedTo === undefined) ? j.rungClimbedTo : j.rungClimedTo );
+    setTaxi(j.taxi);
+
+    return true;
   }
 
   const QR = () => {
@@ -356,7 +368,7 @@ export default function App() {
           {/* <Button title="cryArea" onPress={ async (e) => {
             console.log(await AsyncStorage.getItem(key));
           } }/> */}
-          <TeamGrid setCurrentMatchId={setCurrentMatchId} />
+          <TeamGrid setCurrentMatchId={setCurrentMatchId} restoreFields={restoreFields}/>
         </ScrollView>
       </View>
     )
